@@ -1,15 +1,4 @@
-﻿/*
-* 
-* Exemplos e testes
-* https://download.itau.com.br/bankline/sispag_cnab.pdf
-* https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html
-* https://www.guilhermearaujo.dev/boleto.js/
-* https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm
-* https://www.netdinamica.com.br/boleto/teste-boleto.php
-* 
-* */
-
-let bankSlipValue = '';  // Variável global para armazenar o valor do boleto
+﻿let bankSlipValue = '';  // Variável global para armazenar o valor do boleto
 
 // Função para obter o valor do input e atualizar a variável global
 function updateBankSlipValue() {
@@ -88,7 +77,7 @@ function validateBankSlip(bankSlipValue) {
 // Função que calcula o dígito verificador usando o Módulo 11
 // Módulo é o resto da divisão de um número por outro, no caso N / 11
 function calculateMod11(bankSlipValueWithoutVerifier) {
-    let sequenceNumbersToMultiply = "4329876543298765432987654329876543298765432"; // Sequência fixa de multiplicação, 2 a 9, da direita para esquerda
+    const sequenceNumbersToMultiply = "4329876543298765432987654329876543298765432"; // Sequência fixa de multiplicação, 2 a 9, da direita para esquerda
     let sum = 0;
 
     // Percorre os 43 dígitos do boleto e a sequência de multiplicação
@@ -193,16 +182,16 @@ function showAlert(message, type) {
 
 // Garante que o JavaScript seja executado somente após o carregamento completo da página
 document.addEventListener('DOMContentLoaded', function () {
-    let boletoInput = document.getElementById('txtWritingLine');
+    let bankSlipInput = document.getElementById('txtWritingLine');
 
     // Adiciona o ouvinte de evento 'blur' para o campo
-    boletoInput.addEventListener('blur', function () {
+    bankSlipInput.addEventListener('blur', function () {
         updateBankSlipValue(); // Atualiza o valor do boleto uma vez
         handleBankSlipInput(); // Chama a função de validação com o valor atualizado
     });
 
     // Adiciona o ouvinte de evento 'input' para detectar alterações no campo
-    boletoInput.addEventListener('input', function () {
+    bankSlipInput.addEventListener('input', function () {
         updateBankSlipValue(); // Atualiza o valor do boleto enquanto o usuário digita
 
         // Se o campo estiver vazio, limpa o alerta automaticamente
