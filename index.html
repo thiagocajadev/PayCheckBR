@@ -6,26 +6,31 @@
     <title>PayCheckBR</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/pay-check-br.css" rel="stylesheet">
-    <script src="js/boleto-check.js"></script>
+    <link href="assets/css/pay-check-br.css" rel="stylesheet">
+    <script src="assets/js/boleto-check.js"></script>
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="mb-3 text-center">
-                <label for="txtWritingLine" class="form-label">Digite o código do boleto</label>
+            <!-- Logo Centralizado -->
+            <div class="mb-2 text-center">
+                <img src="assets/img/logo.png" alt="Logo" class="img-fluid mb-4" style="max-width: 300px;">
+            </div>
+
+            <div class="mb-2 text-center">
+                <label for="txtWritingLine" class="form-label">Faça uma checagem básica aqui. 😎🧾</label>
                 <input id="txtWritingLine" type="text" class="form-control"
-                       placeholder="Digite aqui o código ou linha digitável">
+                       placeholder="Informe o código de barras ou linha digitável" autocomplete="off">
                 <small id="charCount" class="form-text text-muted">0 caracteres</small>
             </div>
 
             <!-- Container para exibir as mensagens -->
             <div id="alertContainer" class="text-center"></div>
-            
+
             <!-- Log de validação em uma tabela -->
-            <div id="boletoLogTable" class="mt-3 d-none">
+            <div id="bankSlipLogTable" class="mt-2 d-none">
                 <div class="text-center">Log de validação:</div>
                 <table class="table table-bordered">
                     <thead>
@@ -37,15 +42,15 @@
                     <tbody>
                     <tr>
                         <td>Valor original</td>
-                        <td id="boletoOriginalValueLog"></td> <!-- Exibe o valor original -->
-                    </tr>  
+                        <td id="bankSlipOriginalValueLog"></td> <!-- Exibe o valor original -->
+                    </tr>
                     <tr>
                         <td>Dígito Verificador (5ª posição)</td>
-                        <td id="boletoVerifierLog"></td> <!-- Exibe o dígito verificador -->
+                        <td id="bankSlipVerifierLog"></td> <!-- Exibe o dígito verificador -->
                     </tr>
                     <tr>
                         <td>Removido Verificador</td>
-                        <td id="boletoWithoutVerifierLog"></td> <!-- Exibe o valor sem o dígito verificador -->
+                        <td id="bankSlipWithoutVerifierLog"></td> <!-- Exibe o valor sem o dígito verificador -->
                     </tr>
                     </tbody>
                 </table>

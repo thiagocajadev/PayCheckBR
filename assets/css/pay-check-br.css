@@ -4,3 +4,8 @@
     padding: 2px 4px;
     border-radius: 4px;
 }
+
+/* Centraliza o texto do placeholder */
+input::placeholder {
+    text-align: center;
+}
