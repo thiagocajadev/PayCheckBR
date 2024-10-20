@@ -1,11 +1,81 @@
-﻿.highlight-verifier {
+﻿body {
+    font-family: 'Nunito', sans-serif;
+}
+
+input::placeholder {
+    text-align: center;
+}
+
+.github-fork-ribbon:before {
+    background-color: #155a88;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centraliza a imagem horizontalmente */
+    align-items: center; /* Alinha verticalmente (caso necessário) */
+    position: relative;
+    margin: 0 auto; /* Centraliza o container em relação ao seu bloco pai */
+}
+
+.circular-image {
+    width: 260px; 
+    height: 260px;
+    border-radius: 1%; /* Deixa a imagem circular */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Efeito de sombra em volta */
+}
+
+.highlight-verifier {
     background-color: red;
     color: white;
     padding: 2px 4px;
     border-radius: 4px;
 }
 
-/* Centraliza o texto do placeholder */
-input::placeholder {
-    text-align: center;
+.icon-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+}
+
+.icon-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px; /* Define o tamanho do círculo */
+    height: 26px; /* Define o tamanho do círculo */
+    border-radius: 50%; /* Cria o círculo */
+    transition: background-color 0.25s ease;
+}
+
+.icon-wrap:hover {
+    background-color: #f5f5f5; /* Adiciona um fundo ao passar o mouse */
+}
+
+.icon-wrap svg {
+    padding-top: 2px;
+    width: 14px; /* Define o tamanho do ícone SVG */
+    height: 14px; /* Define o tamanho do ícone SVG */
+}
+
+.icon-wrap svg path {
+    stroke: #343a40; /* Define a cor do ícone */
+    stroke-width: 2;
+}
+
+.up-arrow svg {
+    transform: rotate(180deg); /* Inverte a seta para cima */
+}
+
+.collapse-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.collapse-content.show {
+    display: table-row;
+    opacity: 1;
 }

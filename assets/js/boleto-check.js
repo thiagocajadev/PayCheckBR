@@ -1,202 +1,352 @@
-﻿let bankSlipValue = '';  // Variável global para armazenar o valor do boleto
+﻿// Lista de bancos com códigos. Lista completa no link https://www.bcb.gov.br/Fis/CODCOMPE/Tabela.pdf
+const bankCodes = {
+    "001": "Banco do Brasil",
+    "003": "Banco da Amazônia",
+    "004": "Banco do Nordeste do Brasil",
+    "024": "Banco de Pernambuco",
+    "029": "Banco do Estado do Rio de Janeiro",
+    "033": "Banco Santander",
+    "037": "Banco do Estado do Pará",
+    "041": "Banco do Estado do Rio Grande do Sul",
+    "044": "Banco BVA",
+    "062": "Hipercard Banco Múltiplo",
+    "065": "Banco Lemon",
+    "066": "Banco Morgan Stanley",
+    "072": "Banco Rural Mais",
+    "074": "Banco J. Safra",
+    "077": "Banco Inter",
+    "079": "Banco JBS",
+    "082": "Banco Topázio",
+    "104": "Caixa Econômica Federal",
+    "184": "Banco Itaú BBA S.A.",
+    "197": "Stone Pagamentos",
+    "208": "Banco BTG Pactual",
+    "212": "Banco Original",
+    "218": "Banco Bonsucesso",
+    "229": "Banco Cruzeiro do Sul",
+    "237": "Banco Bradesco",
+    "241": "Banco Clássico",
+    "250": "Banco de Crédito e Varejo (BCV)",
+    "260": "Nubank",
+    "290": "PagBank",
+    "336": "C6 Bank",
+    "341": "Itaú Unibanco",
+    "376": "Banco JPMorgan S.A.",
+    "422": "Banco Safra",
+    "464": "Banco Sumitomo Mitsui Brasileiro",
+    "477": "Citibank",
+    "604": "Banco Industrial do Brasil",
+    "610": "Banco VR",
+    "654": "Banco AJ Renner",
+    "655": "Banco Votorantim",
+    "707": "Banco Daycoval",
+    "734": "Banco Gerdau",
+    "735": "Banco Neon",
+    "746": "Banco Modal",
+    "748": "Banco Cooperativo Sicredi S.A.",
+    "749": "Banco Simples",
+    "102": "XP Investimentos CCTVM S.A.",
+    "119": "Western Union do Brasil",
+    "380": "PicPay"
+};
 
-// Função para obter o valor do input e atualizar a variável global
-function updateBankSlipValue() {
-    let inputField = document.getElementById('txtWritingLine');
-
-    // Aplicar regex para manter apenas números
-    bankSlipValue = inputField.value.replace(/\D/g, '');
-
-    // Atualizar o campo de input com o valor filtrado
-    inputField.value = bankSlipValue;
-
-    // Atualizar a contagem de caracteres
-    document.getElementById('charCount').textContent = `${bankSlipValue.length} caracteres`;
-}
-
-// Função que valida o boleto
-function handleBankSlipInput() {
-    let bankSlipValue = document.getElementById('txtWritingLine').value.replace(/\D/g, '');
-
+// Função principal para manipular a entrada do boleto
+function handleBankSlipInput(bankSlipValue) {
     if (bankSlipValue.length === 0) {
         document.getElementById('bankSlipLogTable').classList.add('d-none');
-        return showAlert(null, 'warning');
+        clearValidationClasses(document.getElementById('txtBankSlipBarcodeLine')); // Remove classes e esconde tooltip
+        return;
     }
 
-    // Verifica se é um código de barras do boleto (44 dígitos)
+    let bankSlipType = ''; // Variável para armazenar o tipo (Código de Barras ou Linha Digitável)
+    let logData = [];
+
+    // Verifica se é um código de barras (44 dígitos) ou linha digitável (47 dígitos)
     if (bankSlipValue.length === 44) {
-        return validateBankSlip(bankSlipValue);
+        bankSlipType = "Código de Barras";
+        logData = validateBankSlip(bankSlipValue);
+    } else if (bankSlipValue.length === 47) {
+        bankSlipType = "Linha Digitável";
+        logData = validateBankSlipReadableLine(bankSlipValue);
+    } else {
+        showTooltip("Número de caracteres inválido", "warning", "txtBankSlipBarcodeLine");
+        document.getElementById('bankSlipLogTable').classList.add('d-none');
+        return;
     }
 
-    // Verifica se é linha digitável (47 dígitos boleto bancário)
-    if (bankSlipValue.length === 47) {
-        return validateWritingLine(bankSlipValue);
-    }
+    // Adiciona a informação do tipo no início do log
+    logData.unshift({
+        id: "0",
+        type: "Tipo de Entrada",
+        length: bankSlipValue.length + ` digitos`,
+        value: bankSlipType
+    });
 
-    // Se não for 44 ou 47 dígitos, retorna falso
-    showAlert("Tamanho do boleto inválido. Verifique o código digitado.", "warning");
-
-    // Adicionar a classe d-none para ocultar a tabela
-    document.getElementById('bankSlipLogTable').classList.add('d-none');
-    return false;
+    displayBankSlipLog(logData);
 }
 
+// Função para validar o código de barras
 function validateBankSlip(bankSlipValue) {
-    // Pega o dígito verificador na posição 5 (índice 4)
-    let bankSlipVerifier = parseInt(bankSlipValue.charAt(4), 10);
+    const logEntries = [];
 
-    // Remove o dígito verificador na posição 5
-    let boletoValueWithoutVerifier = bankSlipValue.slice(0, 4) + bankSlipValue.slice(5);
+    // Banco (primeiros 3 dígitos)
+    const bankCode = bankSlipValue.substring(0, 3);
+    const bankName = bankCodes[bankCode] ? `(${bankCodes[bankCode]})` : "";  // Coloca o nome do banco se existir
+    logEntries.push({
+        id: "1",
+        type: "Banco",
+        length: "3 dígitos (posição 1 a 3)",
+        value: `${bankCode} ${bankName}`
+    });
 
-    // Atualizar o valor original, destacando o dígito verificador
-    let highlightedBoleto = bankSlipValue.slice(0, 4) +
-        `<span class="highlight-verifier">${bankSlipVerifier}</span>` +
-        bankSlipValue.slice(5);
+    // Dígito Verificador (5º dígito)
+    const bankSlipVerifier = parseInt(bankSlipValue.charAt(4), 10);
+    logEntries.push({
+        id: "2",
+        type: "Dígito Verificador",
+        length: "1 dígito (posição 5)",
+        value: bankSlipVerifier.toString()
+    });
 
-    let checkBoletoDigitVerifier = calculateMod11(boletoValueWithoutVerifier);
+    // Valor do boleto (posições 10 a 19) usando a função calculateAmount
+    const amount = calculateAmount(bankSlipValue);
+    logEntries.push({
+        id: "3",
+        type: "Valor",
+        length: "10 dígitos (posição 10 a 19)",
+        value: amount
+    });
 
-    if (bankSlipVerifier !== checkBoletoDigitVerifier) {
-        showAlert(`Digito verificador inválido. Original: ${bankSlipVerifier}. Verificado: ${checkBoletoDigitVerifier}.`, "warning");
-        return false;
+    // Fator de vencimento (posições 6 a 9) e cálculo da data de vencimento usando calculateDueDate
+    const dueDateFormatted = calculateDueDate(bankSlipValue.substring(5, 9)); // Fator de vencimento nas posições 6 a 9
+    logEntries.push({
+        id: "4",
+        type: "Data de Vencimento",
+        length: "4 dígitos (posição 6 a 9)",
+        value: dueDateFormatted
+    });
+
+    // Converter o código de barras em linha digitável e adicionar ao log
+    const readableLine = convertBarCodeToReadableLine(bankSlipValue);
+    if (readableLine) {
+        logEntries.push({
+            id: "5",
+            type: "Linha Digitável",
+            length: "47 dígitos",
+            value: readableLine
+        });
     }
 
-    // Exibir a mensagem de sucesso
-    showAlert("Código de barras do boleto válido.", "success");
+    // Verifica o dígito verificador usando o Mod11
+    const bankSlipValueWithoutVerifier = bankSlipValue.slice(0, 4) + bankSlipValue.slice(5);
+    const checkBankSlipDigitVerifier = calculateMod11(bankSlipValueWithoutVerifier);
 
-    // Remover a classe d-none para exibir a tabela
-    document.getElementById('bankSlipLogTable').classList.remove('d-none');
-
-    // Atualizar a tabela com os logs
-    document.getElementById('bankSlipOriginalValueLog').innerHTML = highlightedBoleto;
-    document.getElementById('bankSlipVerifierLog').textContent = bankSlipVerifier.toString();
-    document.getElementById('bankSlipWithoutVerifierLog').textContent = boletoValueWithoutVerifier;
-
-    return true;
+    if (bankSlipVerifier !== checkBankSlipDigitVerifier) {
+        showTooltip(`Digito verificador inválido. Original: ${bankSlipVerifier}. Verificado: ${checkBankSlipDigitVerifier}.`, "warning", "txtBankSlipBarcodeLine");
+        return logEntries;
+    } else {
+        showTooltip("Código de barras válido.", "success", "txtBankSlipBarcodeLine");
+        return logEntries;
+    }
 }
 
-// Função que calcula o dígito verificador usando o Módulo 11
-// Módulo é o resto da divisão de um número por outro, no caso N / 11
-function calculateMod11(bankSlipValueWithoutVerifier) {
-    const sequenceNumbersToMultiply = "4329876543298765432987654329876543298765432"; // Sequência fixa de multiplicação, 2 a 9, da direita para esquerda
-    let sum = 0;
+// Função para validar a linha digitável
+function validateBankSlipReadableLine(bankSlipValue) {
+    const logEntries = [];
 
-    // Percorre os 43 dígitos do boleto e a sequência de multiplicação
-    for (let i = 0; i < bankSlipValueWithoutVerifier.length; i++) {
-        let currentDigit = parseInt(bankSlipValueWithoutVerifier.charAt(i)); // Pega o dígito atual
-        let multiplier = parseInt(sequenceNumbersToMultiply.charAt(i)); // Pega o multiplicador correspondente da sequência
+    // Banco (primeiros 3 dígitos)
+    const bankCode = bankSlipValue.substring(0, 3);
+    const bankName = bankCodes[bankCode] ? `(${bankCodes[bankCode]})` : "";  // Coloca o nome do banco se existir
+    logEntries.push({
+        id: "1",
+        type: "Banco",
+        length: "3 dígitos (posição 1 a 3)",
+        value: `${bankCode} ${bankName}`
+    });
 
-        sum += currentDigit * multiplier;
+    // Dígito Verificador dos três campos (posições 10, 21 e 32)
+    logEntries.push({
+        id: "2",
+        type: "Dígito Verificador",
+        length: "3 dígitos (posições 10, 21, 32)",
+        value: `${bankSlipValue.charAt(9)}, ${bankSlipValue.charAt(20)}, ${bankSlipValue.charAt(31)}`
+    });
+
+    // Valor do boleto (posição 38 a 47) - as últimas 10 posições
+    const amount = parseFloat(bankSlipValue.substring(37, 47)) / 100; // Valor em centavos (posições 38 a 47)
+    const formattedAmount = `R$ ${amount.toFixed(2).replace('.', ',')}`; // Formata valor corretamente
+    logEntries.push({
+        id: "3",
+        type: "Valor",
+        length: "10 dígitos (posição 38 a 47)",
+        value: `${bankSlipValue.substring(37, 47)} (${formattedAmount})`
+    });
+
+    // Fator de vencimento (posições 34 a 37)
+    const dueDateRaw = bankSlipValue.substring(33, 37);
+    const dueDateFormatted = calculateDueDate(dueDateRaw); // Cálculo da data de vencimento
+    logEntries.push({
+        id: "4",
+        type: "Data de Vencimento",
+        length: "4 dígitos (posição 34 a 37)",
+        value: `${dueDateRaw} (${dueDateFormatted})`
+    });
+
+    // Converter a linha digitável em código de barras
+    const barCode = convertLineToBarCode(bankSlipValue);
+    if (barCode) {
+        logEntries.push({
+            id: "5",
+            type: "Código de Barras",
+            length: "44 dígitos",
+            value: barCode
+        });
     }
 
-    // Calcula o resto da divisão por 11
-    let mod11 = sum % 11;
+    // Calcular os dígitos verificadores usando o Mod10
+    const field1 = bankSlipValue.substring(0, 9); // Campo 1 (sem o DV)
+    const checksumField1 = parseInt(bankSlipValue.charAt(9)); // DV do Campo 1
+    const field2 = bankSlipValue.substring(10, 20); // Campo 2 (sem o DV)
+    const checksumField2 = parseInt(bankSlipValue.charAt(20)); // DV do Campo 2
+    const field3 = bankSlipValue.substring(21, 31); // Campo 3 (sem o DV)
+    const checksumField3 = parseInt(bankSlipValue.charAt(31)); // DV do Campo 3
 
-    // Calcula o dígito verificador
-    let checksum = 11 - mod11;
+    const calculatedChecksumField1 = calculateMod10(field1);
+    const calculatedChecksumField2 = calculateMod10(field2);
+    const calculatedChecksumField3 = calculateMod10(field3);
 
-    // Se o resultado for 0, 1, 10 ou 11, o DV será 1
-    if (checksum === 0 || checksum === 1 || checksum === 10 || checksum === 11) {
-        checksum = 1;
-    }
-
-    return checksum;
-}
-
-function validateWritingLine(bankSlipValue){
-    // Separar os campos da linha digitável
-    let field1 = bankSlipValue.substring(0, 9); // Campo 1 (sem o dígito verificador)
-    let checksumField1 = parseInt(bankSlipValue.charAt(9)); // DV do campo 1
-    let field2 = bankSlipValue.substring(10, 20); // Campo 2 (sem o dígito verificador)
-    let checksumField2 = parseInt(bankSlipValue.charAt(20)); // DV do campo 2
-    let field3 = bankSlipValue.substring(21, 31); // Campo 3 (sem o dígito verificador)
-    let checksumField3 = parseInt(bankSlipValue.charAt(31)); // DV do campo 3
-
-    // Calcular os dígitos verificadores usando o módulo 10
-    let calculatedChecksumField1 = calculateMod10(field1);
-    let calculatedChecksumField2 = calculateMod10(field2);
-    let calculatedChecksumField3 = calculateMod10(field3);
-
-    // Comparar os dígitos calculados com os dígitos verificadores da linha digitável
     if (calculatedChecksumField1 === checksumField1 &&
         calculatedChecksumField2 === checksumField2 &&
         calculatedChecksumField3 === checksumField3) {
-        showAlert("Linha digitável válida.", "success");
-        return true;
+        showTooltip("Linha digitável válida.", "success", "txtBankSlipBarcodeLine");
+        return logEntries;
     } else {
-        showAlert(`Dígitos verificadores inválidos.
-                      \nCampo 1: Calculado ${calculatedChecksumField1}, Esperado ${checksumField1}
-                      \nCampo 2: Calculado ${calculatedChecksumField2}, Esperado ${checksumField2}
-                      \nCampo 3: Calculado ${calculatedChecksumField3}, Esperado ${checksumField3}`, "warning");
-        return false;
+        showTooltip(`Linha digitável inválida.`, "warning", "txtBankSlipBarcodeLine");
+        return logEntries;
     }
 }
 
-// Função que calcula o dígito verificador usando o Módulo 10
-// Módulo é o resto da divisão de um número por outro, no caso N / 10
-function calculateMod10(bankSlipFieldWithoutVerifier) {
+// Função para converter linha digitável em código de barras
+function convertLineToBarCode(bankSlipLine) {
+    if (bankSlipLine.length !== 47) {
+        return null;
+    }
+
+    const barCode = bankSlipLine.replace(
+        /^(\d{4})(\d{5})\d{1}(\d{10})\d{1}(\d{10})\d{1}(\d{15})$/,
+        '$1$5$2$3$4'
+    );
+
+    // Destaque do dígito verificador (posição 5)
+    return `${barCode.substring(0, 4)}<span class="highlight-verifier">${barCode.charAt(4)}</span>${barCode.substring(5)}`;
+}
+
+// Função para converter código de barras em linha digitável
+function convertBarCodeToReadableLine(barCode) {
+    if (barCode.length !== 44) {
+        return null; // Verifica se o código de barras tem 44 dígitos
+    }
+
+    // Campo 1: Primeiros 4 dígitos (banco + moeda) + primeiros 5 dígitos do campo livre
+    const field1 = `${barCode.substring(0, 4)}${barCode.substring(19, 24)}`;
+    const field1Dv = calculateMod10(field1);
+
+    // Campo 2: Próximos 10 dígitos do campo livre
+    const field2 = barCode.substring(24, 34);
+    const field2Dv = calculateMod10(field2);
+
+    // Campo 3: Últimos 10 dígitos do campo livre
+    const field3 = barCode.substring(34, 44);
+    const field3Dv = calculateMod10(field3);
+
+    // Campo 4: Dígito verificador geral (posição 5 do código de barras)
+    const field4 = barCode.charAt(4);
+
+    // Campo 5: Fator de vencimento + valor (posições 6 a 19 do código de barras)
+    const field5 = barCode.substring(5, 19);
+
+    // Retorna a linha digitável formatada com os dígitos verificadores
+    return `${field1.substring(0, 5)}.${field1.substring(5)}<span class="highlight-verifier">${field1Dv}</span> ` +
+        `${field2.substring(0, 5)}.${field2.substring(5)}<span class="highlight-verifier">${field2Dv}</span> ` +
+        `${field3.substring(0, 5)}.${field3.substring(5)}<span class="highlight-verifier">${field3Dv}</span> ` +
+        `<span class="highlight-verifier">${field4}</span> ${field5}`;
+}
+
+// Função para calcular a data de vencimento a partir do fator de vencimento (baseada no boleto.js)
+function calculateDueDate(factor) {
+    const refDate = new Date(Date.UTC(1997, 9, 7)); // Data base definida pelo BACEN: 07/10/1997 em UTC
+    const dueDays = parseInt(factor, 10);
+
+    // Se o fator de vencimento for 0000, o boleto não tem data de vencimento
+    if (dueDays === 0) {
+        return "Sem vencimento";
+    }
+
+    const dueDate = new Date(refDate.getTime() + (dueDays * 86400000)); // Soma os dias à data base em milissegundos
+
+    // Converte a data para o formato DD/MM/AAAA e retorna
+    return dueDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'}); // Garante que a data está no formato correto e em UTC
+}
+
+// Função para calcular o valor do boleto
+function calculateAmount(barCode) {
+    const rawAmount = parseInt(barCode.substring(9, 19), 10); // Valor nas posições 10 a 19
+    const amount = (rawAmount / 100).toFixed(2); // Divide por 100 para obter o valor
+    return `R$ ${amount.replace('.', ',')}`; // Formata como valor em reais
+}
+
+// Função para calcular o dígito verificador pelo Mod11
+function calculateMod11(value) {
+    const sequenceNumbers = "4329876543298765432987654329876543298765432";
     let sum = 0;
 
-    // Percorre os dígitos do campo de trás para frente
-    for (let i = bankSlipFieldWithoutVerifier.length - 1, multiplier = 2; i >= 0; i--) {
-        let currentDigit = parseInt(bankSlipFieldWithoutVerifier.charAt(i)); // Pega o dígito atual
-
-        let product = currentDigit * multiplier;
-
-        // Se o produto for maior que 9, somar os dígitos do produto
-        if (product > 9) {
-            product = Math.floor(product / 10) + (product % 10);
-        }
-
-        sum += product;
-
-        // Alterna o multiplicador entre 2 e 1
-        multiplier = (multiplier === 2) ? 1 : 2;
+    for (let i = 0; i < value.length; i++) {
+        sum += parseInt(value.charAt(i)) * parseInt(sequenceNumbers.charAt(i));
     }
 
-    // Calcula o resto da divisão por 10
-    let mod10 = sum % 10;
-    
-    // Calcula o dígito verificador
-    let checksum = 10 - mod10;
+    const mod11 = sum % 11;
+    let checksum = 11 - mod11;
 
-    // Se o resultado for 10, o DV será 0
-    if (checksum === 10) {
-        checksum = 0;
-    }
-
-    return checksum;
+    // Se o resultado for 0, 1, 10 ou 11, o DV será 1
+    return checksum === 0 || checksum === 1 || checksum > 9 ? 1 : checksum;
 }
 
-// Função que exibe ou limpa o alerta na tela
-function showAlert(message, type) {
-    let alertContainer = document.getElementById('alertContainer');
+// Função para calcular o dígito verificador pelo Mod10
+function calculateMod10(value) {
+    let sum = 0;
 
-    if (message === null) {
-        // Limpa o alerta da tela se a mensagem for nula
-        alertContainer.innerHTML = '';
-    } else {
-        // Exibe o alerta com a mensagem e o tipo correspondente
-        alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    // Percorre os dígitos de trás para frente
+    for (let i = value.length - 1, multiplier = 2; i >= 0; i--) {
+        let currentDigit = parseInt(value.charAt(i)) * multiplier;
+        
+        // Soma os dígitos do produto caso seja maior que 9. Ex: 12 -> 1 + 2 = 3
+        if (currentDigit > 9) {
+            currentDigit = Math.floor(currentDigit / 10) + (currentDigit % 10); 
+        }
+        
+        sum += currentDigit;
+        multiplier = (multiplier === 2) ? 1 : 2; // Alterna o multiplicador entre 2 e 1
     }
+
+    const mod10 = sum % 10;
+    return mod10 === 0 ? 0 : 10 - mod10;
 }
 
-// Garante que o JavaScript seja executado somente após o carregamento completo da página
-document.addEventListener('DOMContentLoaded', function () {
-    let bankSlipInput = document.getElementById('txtWritingLine');
+// Função para exibir o log do boleto em formato TLV (Tipo, Tamanho e Valor)
+function displayBankSlipLog(logData) {
+    const tbody = document.getElementById('bankSlipLogBody');
+    tbody.innerHTML = '';
 
-    // Adiciona o ouvinte de evento 'blur' para o campo
-    bankSlipInput.addEventListener('blur', function () {
-        updateBankSlipValue(); // Atualiza o valor do boleto uma vez
-        handleBankSlipInput(); // Chama a função de validação com o valor atualizado
+    logData.forEach((logEntry, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${logEntry.type}</td>
+            <td>${logEntry.length}</td>
+            <td>${logEntry.value}</td>
+        `;
+        tbody.appendChild(row);
     });
 
-    // Adiciona o ouvinte de evento 'input' para detectar alterações no campo
-    bankSlipInput.addEventListener('input', function () {
-        updateBankSlipValue(); // Atualiza o valor do boleto enquanto o usuário digita
-
-        // Se o campo estiver vazio, limpa o alerta automaticamente
-        if (bankSlipValue.length === 0) {
-            showAlert(null);
-        }
-    });
-});
+    document.getElementById('bankSlipLogTable').classList.remove('d-none');
+}
