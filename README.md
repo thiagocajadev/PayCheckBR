@@ -10,6 +10,14 @@ A intenção única e exclusiva é compartilhar conhecimento com a comunidade.
 
 Confira a versão atual [aqui](https://thiagokj.github.io/PayCheckBR/)
 
+## Documentação
+
+- [Validação de Pix](assets/docs/pix.md)
+- [Validação de Cartão](assets/docs/cartao.md)
+- [Validação de Boleto](assets/docs/boleto.md)
+
+---
+
 ## Exemplos e Recursos Úteis
 
 Aqui estão algumas referências usadas para estruturar o projeto, que podem ser úteis para consulta e testes:
