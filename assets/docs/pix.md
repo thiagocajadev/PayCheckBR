@@ -151,7 +151,91 @@ Agora, vamos dividir o valor das informações adicionais:
 - **Length `04`**: O valor tem 4 caracteres.
 - **Value `F59C`**: Código de verificação (CRC), que é utilizado para garantir a integridade dos dados no código Pix.
 
-### Cálculo do CRC
+
+Mais um exemplo, dessa vez usando os dados do Manual do Pix
+
+00020101021126440014br.gov.bcb.spi0122fulano2019@example.com5204000053039865802BR5913FULANO DE TAL6008BRASILIA6304DFE3
+
+| **Posição** | **Tag** | **Length (Tamanho)** | **Value (Valor)**        | **Descrição**                                                          |
+|-------------|---------|----------------------|--------------------------|------------------------------------------------------------------------|
+| 1 a 6       | `00`    | 02                   | `01`                     | Payload Format Indicator (Indica o formato do Payload Pix)             |
+| 7 a 12      | `01`    | 02                   | `11`                     | Point of Initiation Method (Indica se o Pix é estático ou dinâmico)    |
+| 13 a 58     | `26`    | 44                   | -                        | Merchant Account Information – PIX (Informações da conta do recebedor) |
+| 13 a 28     | `00`    | 14                   | `br.gov.bcb.spi`         | Subtag: GUI (Identificador da autoridade que gerencia a chave - SPI)   |
+| 29 a 50     | `01`    | 22                   | `fulano2019@example.com` | Subtag: Chave Pix (E-mail)                                             |
+| 51 a 56     | `52`    | 04                   | `0000`                   | Merchant Category Code (Código de Categoria do Comerciante, genérico)  |
+| 57 a 61     | `53`    | 03                   | `986`                    | Transaction Currency (Código da moeda, BRL - Real)                     |
+| 62 a 65     | `58`    | 02                   | `BR`                     | Country Code (Código do país - Brasil)                                 |
+| 66 a 79     | `59`    | 13                   | `FULANO DE TAL`          | Merchant Name (Nome do recebedor)                                      |
+| 80 a 88     | `60`    | 08                   | `BRASILIA`               | Merchant City (Cidade do recebedor)                                    |
+| 89 a 94     | `63`    | 04                   | `DFE3`                   | CRC16 (Cyclic Redundancy Check, verificação de integridade)            |
+
+
+### 1. `000201`
+
+- **Tag `00`**: Payload Format Indicator (Indica a versão do Payload Pix).
+- **Length `02`**: O tamanho do valor é 2 caracteres.
+- **Value `01`**: Versão do formato Pix (versão 1).
+
+### 2. `010211`
+
+- **Tag `01`**: Point of Initiation Method (Indica se o Pix é estático ou dinâmico).
+- **Length `02`**: O tamanho do valor é 2 caracteres.
+- **Value `11`**: Indica que o Pix é dinâmico. (12 indica que é estático)
+
+### 3. `26440014br.gov.bcb.spi0122fulano2019@example.com`
+
+- **Tag `26`**: Merchant Account Information – PIX (Informações da conta do recebedor).
+- **Length `44`**: O valor tem 44 caracteres no total.
+
+Agora, vamos dividir esse campo em subtags:
+
+- **Subtag `00`**: GUI (Identificador da autoridade que gerencia a chave).
+    - **Length `14`**: O valor dessa subtag tem 14 caracteres.
+    - **Value `br.gov.bcb.spi`**: Indica que a transação está sob a autoridade do **Sistema de Pagamentos Instantâneos (
+      SPI)** do Banco Central.
+- **Subtag `01`**: Chave Pix.
+    - **Length `22`**: O valor dessa subtag tem 22 caracteres.
+    - **Value `fulano2019@example.com`**: Chave Pix no formato de e-mail.
+
+### 4. `52040000`
+
+- **Tag `52`**: Merchant Category Code (Código de Categoria do Comerciante).
+- **Length `04`**: O valor tem 4 caracteres.
+- **Value `0000`**: Indica que não há uma categoria específica ou o valor é genérico para a transação.
+
+### 5. `5303986`
+
+- **Tag `53`**: Código da Moeda.
+- **Length `03`**: O valor tem 3 caracteres.
+- **Value `986`**: O código `986` representa o Real Brasileiro (BRL), a moeda da transação.
+
+### 6. `5802BR`
+
+- **Tag `58`**: País do Recebedor.
+- **Length `02`**: O valor tem 2 caracteres.
+- **Value `BR`**: O código `BR` representa o Brasil, o país do recebedor.
+
+### 7. `5913FULANO DE TAL`
+
+- **Tag `59`**: Nome do Recebedor.
+- **Length `13`**: O valor tem 13 caracteres.
+- **Value `FULANO DE TAL`**: Nome do recebedor da transação.
+
+### 8. `6008BRASILIA`
+
+- **Tag `60`**: Cidade do Recebedor.
+- **Length `08`**: O valor tem 8 caracteres.
+- **Value `BRASILIA`**: Cidade do recebedor, Brasília.
+
+### 9. `6304DFE3`
+
+- **Tag `63`**: CRC (Cyclic Redundancy Check).
+- **Length `04`**: O valor tem 4 caracteres.
+- **Value `DFE3`**: Código de verificação (CRC), que é utilizado para garantir a integridade dos dados no código Pix.
+
+
+## Cálculo do CRC
 
 O **CRC (Cyclic Redundancy Check)** é utilizado no código Pix para garantir a integridade dos dados e assegurar que o
 conteúdo do código não foi alterado. O valor CRC é gerado utilizando um algoritmo de verificação que cria uma soma de

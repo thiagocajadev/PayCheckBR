@@ -4,7 +4,7 @@ function validatePix(pixValue) {
         clearValidationClasses(document.getElementById('txtCopyPastePIX')); // Remove classes e esconde tooltip
         return;
     }
-    
+
     const pixFields = processPixTLV(pixValue);
     const checkCRC = validateCRC(pixValue);
 
@@ -13,8 +13,8 @@ function validatePix(pixValue) {
     } else {
         showTooltip("Código PIX inválido!", "warning", "txtCopyPastePIX");
     }
-    
-    if(pixValue.length > 0) {
+
+    if (pixValue.length > 0) {
         displayPixLog(pixFields);
     }
 }
@@ -23,20 +23,49 @@ function processPixTLV(pixCode) {
     let index = 0;
     const fields = {};
 
+    // IDs que podem conter subtags
+    const idsWithSubtags = ["26", "27", "62", "80", "81"];
+
     while (index < pixCode.length) {
-        const id = pixCode.substring(index, index + 2);
+        const id = pixCode.substring(index, index + 2); // Extrai a Tag (ID)
         index += 2;
 
-        const length = parseInt(pixCode.substring(index, index + 2), 10);
+        const length = parseInt(pixCode.substring(index, index + 2), 10); // Extrai o tamanho do campo
         index += 2;
 
-        const value = pixCode.substring(index, index + length);
+        const value = pixCode.substring(index, index + length); // Extrai o valor correspondente
         index += length;
 
-        fields[id] = {length, value};
+        // Verifica se o campo contém subtags e as processa
+        if (idsWithSubtags.includes(id)) {
+            fields[id] = {length, value, subtags: processSubtags(value)}; // Chama processSubtags com o valor e processa as subtags
+        } else {
+            fields[id] = {length, value}; // Se não há subtags, armazena normalmente
+        }
     }
 
     return fields;
+}
+
+function processSubtags(value) {
+    let index = 0;
+    const subtags = {};
+
+    while (index < value.length) {
+        const subId = value.substring(index, index + 2); // Extrai a Subtag (ID)
+        index += 2;
+
+        const subLength = parseInt(value.substring(index, index + 2), 10); // Extrai o tamanho da subtag
+        index += 2;
+
+        const subValue = value.substring(index, index + subLength); // Extrai o valor da subtag
+        index += subLength;
+
+        // Armazena a subtag com o seu próprio comprimento e valor
+        subtags[subId] = {subLength, subValue};
+    }
+
+    return subtags;
 }
 
 function validateCRC(pixCode) {
@@ -76,6 +105,7 @@ function displayPixLog(pixFields) {
 
     const emvDescription = {
         "00": "Payload Format Indicator",
+        "01": "Point of Initiation Method",
         "04": "Merchant Account Information – Cards",
         "26": "Merchant Account Information – PIX",
         "27": "Merchant Account Information – Other",
@@ -88,7 +118,8 @@ function displayPixLog(pixFields) {
         "61": "Postal Code",
         "62": "Additional Data Field",
         "80": "Unreserved Templates",
-        "63": "CRC16-CCITT (0xFFFF)"
+        "81": "Unreserved Templates",
+        "63": "CRC16"
     };
 
     const subFieldsEMV = {
@@ -101,9 +132,14 @@ function displayPixLog(pixFields) {
             "01": "AccountId"
         },
         "62": {
-            "05": "Reference Label"
+            "05": "Reference Label",
+            "50": "Payment system specific template"
         },
         "80": {
+            "00": "GUI",
+            "01": "URL"
+        },
+        "81": {
             "00": "GUI",
             "01": "Arrangement arbitrary info"
         }
@@ -157,26 +193,19 @@ function displayPixLog(pixFields) {
             `;
 
             const subTbody = subTable.querySelector('tbody');
-            const subIds = Object.keys(subFieldsEMV[id]);
+            const subIds = Object.keys(field.subtags).sort();
 
             subIds.forEach(subId => {
-                let subValue = '';
-                if (id === "62" && subId === "05") {
-                    subValue = field.value.substring(4);
-                } else if (subId === "00") {
-                    subValue = field.value.substring(4, 18);
-                } else if (subId === "01") {
-                    subValue = field.value.substring(22);
-                }
+                const subField = field.subtags[subId];
+                const subEMVName = subFieldsEMV[id][subId] || "Unknown Subtag";
 
-                const subField = subFieldsEMV[id][subId];
                 const subRow = document.createElement('tr');
                 subRow.innerHTML = `
                     <td></td>
                     <td>${subId}</td>
-                    <td>${subField}</td>
-                    <td>${field.length.toString().padStart(2, '0')}</td>
-                    <td>${subValue}</td>
+                    <td>${subEMVName}</td>
+                    <td>${subField.subLength.toString().padStart(2, '0')}</td>
+                    <td>${subField.subValue}</td>
                 `;
                 subTbody.appendChild(subRow);
             });
