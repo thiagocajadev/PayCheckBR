@@ -33,6 +33,7 @@ CARTÃO DE CRÉDITO
 
 - [Cartão - Guia sobre validação de cartões de crédito](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
 - [Cartão - Gerar dados de cartão para testes](https://www.4devs.com.br/gerador_de_numero_cartao_credito)
+- [Cartão - Gerar imagem de um cartão fictício](https://dnowdd.github.io/CreditCard-Image-Generator/)
 - [Cartão - Validar cartão de testes](https://www.4devs.com.br/validador_numero_cartao_credito)
 - [Cartão - API para consulta BIN](https://docs.chargeblast.com/reference/bin-lookup)
 
