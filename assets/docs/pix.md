@@ -327,4 +327,8 @@ function calculateCRC16(payload) {
 }
 ```
 
+A implementação do CRC foi baseado no [validador de PIX](https://github.com/NascentSecureTech/pix-qrcode-utils/blob/master/packages/emv-merchant-qrcode/src/crc.ts)
+
+Essa pesquisa foi feita no [Github do BACEN](https://github.com/bacen/pix-api/issues/189), onde os Devs estavam realizando testes e trocando informações.
+
 Com essas informações fica um pouco mais claro como pode ser validada uma chave PIX.
