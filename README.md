@@ -20,7 +20,7 @@ Confira a versão atual [aqui](https://thiagokj.github.io/PayCheckBR/)
 
 ## Exemplos e Recursos Úteis
 
-Aqui estão algumas referências usadas para estruturar o projeto, que podem ser úteis para consulta e testes:
+Aqui estão algumas referências e todo agradecimento pelos projetos livres usados para estruturar o projeto. Use para consulta e testes:
 
 PIX - PAGAMENTO INSTANTÂNEO BRASILEIRO
 

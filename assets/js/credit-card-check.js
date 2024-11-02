@@ -74,7 +74,7 @@ function validateCreditCard(cardValue) {
             logData.push({
                 id: "2",
                 type: "Bandeira do Cartão",
-                length: `${cardValue.length} dígitos`,
+                length: `N/A`,
                 value: response.brand || cardInfo.brand
             });
 
@@ -115,7 +115,7 @@ function validateCreditCard(cardValue) {
             logData.push({
                 id: "2",
                 type: "Bandeira do Cartão",
-                length: `${cardValue.length} dígitos`,
+                length: `N/A`,
                 value: cardInfo.brand
             });
 
