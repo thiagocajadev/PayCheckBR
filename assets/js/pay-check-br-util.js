@@ -24,30 +24,30 @@ function populatePaymentType() {
 // Função para alternar a visibilidade dos inputs com base no tipo de pagamento selecionado
 function togglePaymentInputs() {
     const select = document.getElementById('paymentType');
-    const pixInput = document.getElementById('txtCopyPastePIX');
-    const cardInput = document.getElementById('txtCreditCard');
-    const boletoInput = document.getElementById('txtBankSlipBarcodeLine');
+    const pixInputDiv = document.getElementById('pixInputDiv');
+    const cardInputDiv = document.getElementById('cardInputDiv');
+    const boletoInputDiv = document.getElementById('boletoInputDiv');
 
-    // Esconde todos os inputs
-    pixInput.parentElement.classList.add('d-none');
-    cardInput.parentElement.classList.add('d-none');
-    boletoInput.parentElement.classList.add('d-none');
+    // Esconde todas as divs de input
+    pixInputDiv.classList.add('d-none');
+    cardInputDiv.classList.add('d-none');
+    boletoInputDiv.classList.add('d-none');
 
     // Limpa os valores, tooltips e classes de validação dos campos
-    resetInputField(pixInput, 'charCountPix');
-    resetInputField(cardInput, 'charCountCreditCard');
-    resetInputField(boletoInput, 'charCountBankSlip');
+    resetInputField(document.getElementById('txtCopyPastePIX'), 'charCountPix');
+    resetInputField(document.getElementById('txtCreditCard'), 'charCountCreditCard');
+    resetInputField(document.getElementById('txtBankSlipBarcodeLine'), 'charCountBankSlip');
 
-    // Mostra o input correto com base no valor selecionado
+    // Mostra a div correta com base no valor selecionado
     switch (select.value) {
         case '1': // PIX
-            pixInput.parentElement.classList.remove('d-none');
+            pixInputDiv.classList.remove('d-none');
             break;
         case '2': // Cartão
-            cardInput.parentElement.classList.remove('d-none');
+            cardInputDiv.classList.remove('d-none');
             break;
         case '3': // Boleto
-            boletoInput.parentElement.classList.remove('d-none');
+            boletoInputDiv.classList.remove('d-none');
             break;
         default:
             break;
@@ -93,46 +93,80 @@ document.addEventListener('DOMContentLoaded', function () {
     const pixInput = document.getElementById('txtCopyPastePIX');
     const creditCardInput = document.getElementById('txtCreditCard');
     const bankSlipInput = document.getElementById('txtBankSlipBarcodeLine');
+    
+    // Referências a botões com dados de exemplo
+    const btnFillPixCopyPasteExampleData = document.getElementById('btnFillPixCopyPasteExampleData');
+    const btnFillCreditCardExampleData = document.getElementById('btnFillCreditCardExampleData');
+    const btnFillBankSlipExampleData = document.getElementById('btnFillBankSlipExampleData');
 
-    // Detecta alterações nos campos de input e atualiza o contador de caracteres
     [bankSlipInput, creditCardInput, pixInput].forEach(inputField => {
-        inputField.addEventListener('input', function () {
-            // Limpa as classes de validação e esconde tooltips quando o campo está vazio
-            if (inputField.value.length === 0) {
-                clearValidationClasses(inputField);
-            }
-
-            // Atualiza o contador de caracteres conforme o campo
-            switch (inputField.id) {
-                case 'txtCopyPastePIX':
-                    updateCharCount(inputField, 'charCountPix'); // Contador para Pix
-                    break;
-                case 'txtCreditCard':
-                    updateCharCount(inputField, 'charCountCreditCard'); // Contador para cartão de crédito
-                    break;
-                case 'txtBankSlipBarcodeLine':
-                    updateCharCount(inputField, 'charCountBankSlip'); // Contador para boleto
-                    break;
-            }
-        });
+        const updateCount = () => updateCharCountById(inputField);
+        inputField.addEventListener('input', updateCount); // Atualiza ao perder o foco
     });
+
+// Função para atualizar o contador com base no ID do campo
+    function updateCharCountById(inputField) {
+        switch (inputField.id) {
+            case 'txtCopyPastePIX':
+                updateCharCount(inputField, 'charCountPix'); // Contador para Pix
+                break;
+            case 'txtCreditCard':
+                updateCharCount(inputField, 'charCountCreditCard'); // Contador para cartão de crédito
+                break;
+            case 'txtBankSlipBarcodeLine':
+                updateCharCount(inputField, 'charCountBankSlip'); // Contador para boleto
+                break;
+        }
+    }
 
     // Evento de validação para Pix
     pixInput.addEventListener('blur', function () {
         const pixValue = pixInput.value;
+        updateCharCountById(pixInput);
         validatePix(pixValue); // Valida o código Pix
+    }); 
+    
+    // Evento para atualizar contador de caracteres
+    pixInput.addEventListener('input', function () {
+        const pixValue = pixInput.value;
+        updateCharCountById(pixInput);
     });
     
     // Evento de validação para o boleto
     bankSlipInput.addEventListener('blur', function () {
         const bankSlipValue = bankSlipInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        bankSlipInput.value = bankSlipValue;
+        updateCharCountById(bankSlipInput);
         handleBankSlipInput(bankSlipValue); // Chama a função de validação do boleto
     });
 
     // Evento de validação para cartão de crédito
     creditCardInput.addEventListener('blur', function () {
         const cardValue = creditCardInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        creditCardInput.value = cardValue;
+        updateCharCountById(creditCardInput);
         validateCreditCard(cardValue); // Valida o cartão de crédito
+    });
+
+    // Preenche Pix com dados de exemplo
+    btnFillPixCopyPasteExampleData.addEventListener('click', function (){
+        pixInput.value = '00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5915THIAGO CARVALHO6011SANTO ANDRE62200516PAGAMENTOOUT20246304F59C';
+        pixInput.focus();
+        pixInput.blur();
+    });
+
+    // Preenche cartão de crédito com dados de exemplo
+    btnFillCreditCardExampleData.addEventListener('click', function (){
+        creditCardInput.value = '5464984762204819';
+        creditCardInput.focus();
+        creditCardInput.blur();
+    });  
+    
+    // Preenche cartão de crédito com dados de exemplo
+    btnFillBankSlipExampleData.addEventListener('click', function (){
+        bankSlipInput.value = '23796988500000200251234010001234200240012430';
+        bankSlipInput.focus();
+        bankSlipInput.blur();
     });
 });
 

@@ -78,7 +78,7 @@ function handleBankSlipInput(bankSlipValue) {
     logData.unshift({
         id: "0",
         type: "Tipo de Entrada",
-        length: bankSlipValue.length + ` digitos`,
+        length: bankSlipValue.length + ` dígitos`,
         value: bankSlipType
     });
 
@@ -101,37 +101,40 @@ function validateBankSlip(bankSlipValue) {
 
     // Dígito Verificador (5º dígito)
     const bankSlipVerifier = parseInt(bankSlipValue.charAt(4), 10);
+    const bankSlipVerifierRange = bankSlipValue.substring(0, 4);
     logEntries.push({
         id: "2",
         type: "Dígito Verificador",
         length: "1 dígito (posição 5)",
-        value: bankSlipVerifier.toString()
+        value: `${bankSlipVerifierRange}<span class="highlight-verifier">${bankSlipVerifier.toString()}</span>`
+    });
+
+    // Fator de vencimento (posições 6 a 9) e cálculo da data de vencimento usando calculateDueDate
+    const dueDateRange = bankSlipValue.substring(5, 9); // Fator de vencimento nas posições 6 a 9
+    const dueDateFormatted = calculateDueDate(dueDateRange); // Fator de vencimento nas posições 6 a 9
+    logEntries.push({
+        id: "3",
+        type: "Data de Vencimento",
+        length: "4 dígitos (posição 6 a 9)",
+        value: `${dueDateRange} (${dueDateFormatted})`
     });
 
     // Valor do boleto (posições 10 a 19) usando a função calculateAmount
     const amount = calculateAmount(bankSlipValue);
-    logEntries.push({
-        id: "3",
-        type: "Valor",
-        length: "10 dígitos (posição 10 a 19)",
-        value: amount
-    });
-
-    // Fator de vencimento (posições 6 a 9) e cálculo da data de vencimento usando calculateDueDate
-    const dueDateFormatted = calculateDueDate(bankSlipValue.substring(5, 9)); // Fator de vencimento nas posições 6 a 9
+    const amountRange = bankSlipValue.substring(9, 19);
     logEntries.push({
         id: "4",
-        type: "Data de Vencimento",
-        length: "4 dígitos (posição 6 a 9)",
-        value: dueDateFormatted
+        type: "Valor",
+        length: "10 dígitos (posição 10 a 19)",
+        value: `${amountRange} (${amount})`
     });
 
     // Converter o código de barras em linha digitável e adicionar ao log
-    const readableLine = convertBarCodeToReadableLine(bankSlipValue);
+    const readableLine = convertBarcodeToReadableLine(bankSlipValue);
     if (readableLine) {
         logEntries.push({
             id: "5",
-            type: "Linha Digitável",
+            type: "Linha Digitável Convertida",
             length: "47 dígitos",
             value: readableLine
         });
@@ -165,21 +168,24 @@ function validateBankSlipReadableLine(bankSlipValue) {
     });
 
     // Dígito Verificador dos três campos (posições 10, 21 e 32)
+    const bankSlipFirstRange = bankSlipValue.substring(0, 9);
+    const bankSlipSecondRange = bankSlipValue.substring(10, 20);
+    const bankSlipThirdRange = bankSlipValue.substring(21, 31);
     logEntries.push({
         id: "2",
-        type: "Dígito Verificador",
+        type: "Dígitos Verificadores",
         length: "3 dígitos (posições 10, 21, 32)",
-        value: `${bankSlipValue.charAt(9)}, ${bankSlipValue.charAt(20)}, ${bankSlipValue.charAt(31)}`
+        value: `${bankSlipFirstRange} <span class="highlight-verifier">${bankSlipValue.charAt(9)}</span> ${bankSlipSecondRange} <span class="highlight-verifier">${bankSlipValue.charAt(20)}</span> ${bankSlipThirdRange} <span class="highlight-verifier">${bankSlipValue.charAt(31)}</span>`
     });
-
-    // Valor do boleto (posição 38 a 47) - as últimas 10 posições
-    const amount = parseFloat(bankSlipValue.substring(37, 47)) / 100; // Valor em centavos (posições 38 a 47)
-    const formattedAmount = `R$ ${amount.toFixed(2).replace('.', ',')}`; // Formata valor corretamente
+    
+    // Dígito Verificador Geral (posição 33)
+    const bankSlipRangeBeforeOverallCheckDigit = bankSlipValue.substring(0, 32);
+    const bankSlipOverallCheckDigit = bankSlipValue.charAt(32);
     logEntries.push({
         id: "3",
-        type: "Valor",
-        length: "10 dígitos (posição 38 a 47)",
-        value: `${bankSlipValue.substring(37, 47)} (${formattedAmount})`
+        type: "Dígito Verificador Geral",
+        length: "1 dígito (posição 33)",
+        value: `${bankSlipRangeBeforeOverallCheckDigit} <span class="highlight-verifier">${bankSlipOverallCheckDigit}</span>`
     });
 
     // Fator de vencimento (posições 34 a 37)
@@ -192,14 +198,24 @@ function validateBankSlipReadableLine(bankSlipValue) {
         value: `${dueDateRaw} (${dueDateFormatted})`
     });
 
+    // Valor do boleto (posição 38 a 47) - as últimas 10 posições
+    const amount = parseFloat(bankSlipValue.substring(37, 47)) / 100; // Valor em centavos (posições 38 a 47)
+    const formattedAmount = `R$ ${amount.toFixed(2).replace('.', ',')}`; // Formata valor corretamente
+    logEntries.push({
+        id: "5",
+        type: "Valor",
+        length: "10 dígitos (posição 38 a 47)",
+        value: `${bankSlipValue.substring(37, 47)} (${formattedAmount})`
+    });
+
     // Converter a linha digitável em código de barras
-    const barCode = convertLineToBarCode(bankSlipValue);
-    if (barCode) {
+    const barcode = convertReadableLineToBarcode(bankSlipValue);
+    if (barcode) {
         logEntries.push({
-            id: "5",
-            type: "Código de Barras",
+            id: "6",
+            type: "Código de Barras Convertido",
             length: "44 dígitos",
-            value: barCode
+            value: barcode
         });
     }
 
@@ -227,7 +243,7 @@ function validateBankSlipReadableLine(bankSlipValue) {
 }
 
 // Função para converter linha digitável em código de barras
-function convertLineToBarCode(bankSlipLine) {
+function convertReadableLineToBarcode(bankSlipLine) {
     if (bankSlipLine.length !== 47) {
         return null;
     }
@@ -242,7 +258,7 @@ function convertLineToBarCode(bankSlipLine) {
 }
 
 // Função para converter código de barras em linha digitável
-function convertBarCodeToReadableLine(barCode) {
+function convertBarcodeToReadableLine(barCode) {
     if (barCode.length !== 44) {
         return null; // Verifica se o código de barras tem 44 dígitos
     }

@@ -99,6 +99,27 @@ function validateCreditCard(cardValue) {
                 value: response.country || "Desconhecido"
             });
 
+            logData.push({
+                id: "6",
+                type: "IIN/BIN",
+                length: "6 dígitos",
+                value: bin
+            });
+
+            logData.push({
+                id: "7",
+                type: "Sequência do Titular",
+                length: "9 dígitos",
+                value: cardValue.slice(6, 15) // Extrai 9 dígitos para a sequência do titular
+            });
+
+            logData.push({
+                id: "8",
+                type: "Dígito Verificador",
+                length: "1 dígito",
+                value: `<span class="highlight-verifier">${cardValue.slice(-1)}</span>`
+            });
+
             showTooltip("Cartão válido!", "success", "txtCreditCard");
             displayCreditCardLog(logData);
         })

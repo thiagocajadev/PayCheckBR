@@ -86,7 +86,7 @@ validade estejam expostos.
 
 ---
 
-### Exemplo com o Número "5464 9847 6220 4819"
+### Exemplo com o Número de 16 dígitos
 
 Para ilustrar, vamos dividir o número "5464 9847 6220 4819":
 

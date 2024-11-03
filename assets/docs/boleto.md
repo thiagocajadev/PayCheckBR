@@ -46,28 +46,29 @@ Abaixo, os principais componentes do boleto e suas funções:
 
 Separado em segmentos conforme o padrão TLV (Type, Length, Value), incluindo os principais campos:
 
-| **ID** | **Tipo**           | **Tamanho**                  | **Valor**                                              |
-|--------|--------------------|------------------------------|--------------------------------------------------------|
-| 1      | Tipo de Entrada    | 44 dígitos                   | Código de Barras                                       |
-| 2      | Banco              | 3 dígitos (posição 1 a 3)    | 237 (Banco Bradesco)                                   |
-| 3      | Dígito Verificador | 1 dígito (posição 5)         | 6                                                      |
-| 4      | Valor              | 10 dígitos (posição 10 a 19) | R$ 200,25                                              |
-| 5      | Data de Vencimento | 4 dígitos (posição 6 a 9)    | 30/10/2024                                             |
-| 6      | Linha Digitável    | 47 dígitos                   | 23791.23405 10001.234201 02400.124307 6 98850000020025 |
+| **ID** | **Tipo**                   | **Tamanho**                  | **Valor**                                                                      |
+|--------|----------------------------|------------------------------|--------------------------------------------------------------------------------|
+| 1      | Tipo de Entrada            | 44 dígitos                   | Código de Barras                                                               |
+| 2      | Banco                      | 3 dígitos (posição 1 a 3)    | 237 (Banco Bradesco)                                                           |
+| 3      | Dígito Verificador         | 1 dígito (posição 5)         | ~~2379~~  **6**                                                                |
+| 4      | Data de Vencimento         | 4 dígitos (posição 6 a 9)    | ~~23796~~  **9885** (30/10/2024)                                               |
+| 5      | Valor                      | 10 dígitos (posição 10 a 19) | ~~237969885~~  **0000020025** (R$ 200,25)                                      |
+| 6      | Linha Digitável Convertida | 47 dígitos                   | 23791.2340  **5** 10001.23420  **1** 02400.12430  **7**   **6** 98850000020025 |
 
 ### Exemplo de Linha Digitável (47 dígitos)
 ```plaintext
 23791.23405 10001.234201 02400.124307 6 98850000020025
 ```
 
-| **ID** | **Tipo**           | **Tamanho**                     | **Valor**                                    |
-|--------|--------------------|---------------------------------|----------------------------------------------|
-| 1      | Tipo de Entrada    | 47 dígitos                      | Linha Digitável                              |
-| 2      | Banco              | 3 dígitos (posição 1 a 3)       | 237 (Banco Bradesco)                         |
-| 3      | Dígito Verificador | 3 dígitos (posições 10, 21, 32) | 5, 1, 7                                      |
-| 4      | Valor              | 10 dígitos (posição 38 a 47)    | 0000020025 (R$ 200,25)                       |
-| 5      | Data de Vencimento | 4 dígitos (posição 34 a 37)     | 9885 (30/10/2024)                            |
-| 6      | Código de Barras   | 44 dígitos                      | 23796988500000200251234010001234200240012430 |
+| **ID** | **Tipo**                    | **Tamanho**                     | **Valor**                                                             |
+|--------|-----------------------------|---------------------------------|-----------------------------------------------------------------------|
+| 1      | Tipo de Entrada             | 47 dígitos                      | Linha Digitável                                                       |
+| 2      | Banco                       | 3 dígitos (posição 1 a 3)       | 237 (Banco Bradesco)                                                  |
+| 3      | Dígitos Verificadores       | 3 dígitos (posições 10, 21, 32) | ~~237912340~~  **5**  ~~1000123420~~  **1**  ~~0240012430~~  **7**    |
+| 4      | Dígito Verificador Geral    | 1 dígito (posição 33)           | ~~23791234051000123420102400124307~~  **6**                           |
+| 5      | Data de Vencimento          | 4 dígitos (posição 34 a 37)     | ~~237912340510001234201024001243076~~  **9885** (30/10/2024)          |
+| 6      | Valor                       | 10 dígitos (posição 38 a 47)    | ~~2379123405100012342010240012430769885~~  **0000020025** (R$ 200,25) |
+| 7      | Código de Barras Convertido | 44 dígitos                      | 2379  **6**  988500000200251234010001234200240012430                  |
 
 ### Validação do Boleto
 
