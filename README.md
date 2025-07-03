@@ -8,7 +8,7 @@ A intenção única e exclusiva é compartilhar conhecimento com a comunidade.
 
 ---
 
-Confira a versão atual [aqui](https://thiagokj.github.io/PayCheckBR/)
+Confira a versão atual [aqui](https://thiagocajadev.github.io/PayCheckBR/)
 
 ## Documentação
 
