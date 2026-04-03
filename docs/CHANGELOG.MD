@@ -5,7 +5,19 @@ Todas as mudanças notáveis para este projeto serão documentadas neste arquivo
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-04-03
+
+### 🚀 Adicionado
+- **Logo Oficial SVG**: Implementação do novo logo vetorial `src/assets/img/logo.svg` com design Neobrutalista.
+
+### 🎨 Alterado
+- **README & Assets**: Atualização de referências visuais e favicon para a nova identidade visual.
+
+### 🧹 Removido
+- **Legacy Cleanup**: Exclusão de arquivos obsoletos (`src/index.html` legado), pastas de assets antigos (`assets/js`, `assets/css`) e imagens PNG substituídas.
+
 ## [1.2.0] - 2026-04-03
+
 
 ### 🚀 Adicionado
 - **Anatomia do Pix**: Nova visualização de dissecação linear (Anatomy Dissection) com cálculo de posições absolutas (byte-a-byte) conforme o padrão EMV® QRCPS.
