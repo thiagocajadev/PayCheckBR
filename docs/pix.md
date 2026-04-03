@@ -1,4 +1,4 @@
-﻿# Anatomia do PIX
+# Anatomia do PIX
 
 O meio de pagamento PIX - Pagamento Instantâneo Brasileiro ganhou rápida popularidade desde seu lançamento, devido
 a facilidade e velocidade na transação.
@@ -48,12 +48,12 @@ O sistema Pix permite o registro de diferentes tipos de chaves para vincular uma
 
 ### Exemplo de chave PIX - Copia e Cola
 
-00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5915THIAGO CARVALHO6011SANTO
-ANDRE62200516PAGAMENTOOUT20246304F59C
+00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5914THIAGO CAJAIBA6011SANTO
+ANDRE62200516PAGAMENTOOUT202463043BAB
 
 Separando em segmentos conforme o padrão TLV (Type, Lenght, Value), incluindo as Subtags
 
-![pix-details.png](../img/pix-details.png)
+![pix-details.png](img/pix-details.png)
 
 ## Anatomia do Pix em detalhes:
 
@@ -67,11 +67,11 @@ Separando em segmentos conforme o padrão TLV (Type, Lenght, Value), incluindo a
 | 31 a 36     | `53`    | 03                   | `986`                     | Código da moeda (BRL - Real)           |
 | 37 a 44     | `54`    | 06                   | `100.55`                  | Valor da transação (R$ 100,55)         |
 | 45 a 48     | `58`    | 02                   | `BR`                      | Código do país (Brasil)                |
-| 49 a 63     | `59`    | 15                   | `THIAGO CARVALHO`         | Nome do recebedor                      |
+| 49 a 62     | `59`    | 14                   | `THIAGO CAJAIBA`         | Nome do recebedor                      |
 | 64 a 74     | `60`    | 11                   | `SANTO ANDRE`             | Cidade do recebedor                    |
 | 75 a 94     | `62`    | 20                   | -                         | Informações adicionais                 |
 | 95 a 100    | `05`    | 16                   | `PAGAMENTOOUT2024`        | Subtag: Descrição do pagamento         |
-| 101 a 106   | `63`    | 04                   | `F59C`                    | CRC (verificação do código)            |
+| 101 a 106   | `63`    | 04                   | `3BAB`                    | CRC (verificação do código)            |
 
 ### 1. `000201`
 
@@ -122,11 +122,11 @@ Agora, vamos dividir esse campo em subtags:
 - **Length `02`**: O valor tem 2 caracteres.
 - **Value `BR`**: O código `BR` representa Brasil, o país do recebedor.
 
-### 8. `5915THIAGO CARVALHO`
+### 8. `5914THIAGO CAJAIBA`
 
 - **Tag `59`**: Nome do Recebedor.
-- **Length `15`**: O valor tem 15 caracteres.
-- **Value `THIAGO CARVALHO`**: Nome do recebedor da transação, Thiago Carvalho.
+- **Length `14`**: O valor tem 14 caracteres.
+- **Value `THIAGO CAJAIBA`**: Nome do recebedor da transação, Thiago Cajaíba.
 
 ### 9. `6011SANTO ANDRE`
 
@@ -149,7 +149,7 @@ Agora, vamos dividir o valor das informações adicionais:
 
 - **Tag `63`**: CRC (Cyclic Redundancy Check).
 - **Length `04`**: O valor tem 4 caracteres.
-- **Value `F59C`**: Código de verificação (CRC), que é utilizado para garantir a integridade dos dados no código Pix.
+- **Value `3BAB`**: Código de verificação (CRC), que é utilizado para garantir a integridade dos dados no código Pix.
 
 
 Mais um exemplo, dessa vez usando os dados do Manual do Pix
@@ -258,7 +258,7 @@ verificação dos dados, permitindo detectar alterações acidentais.
 3. **Inserção do CRC no código Pix**: Após calcular o valor CRC com base na entrada, o valor resultante (um hexadecimal
    de 4 dígitos) é inserido no campo **Tag `63`**, que corresponde ao CRC no Pix.
 
-Considerando o PIX do exemplo, o final é 6304 (tag e tamanho do campo). Então, F59C é o valor do CRC.
+Considerando o PIX do exemplo, o final é 6304 (tag e tamanho do campo). Então, 3BAB é o valor do CRC.
 
 Abaixo trecho do código para calcular e verificar o CRC:
 
@@ -323,7 +323,7 @@ function calculateCRC16(payload) {
     // A função `toString(16)` converte o valor numérico para hexadecimal
     // `toUpperCase()` converte para letras maiúsculas (padrão do CRC) e `padStart(4, '0')`
     // garante que o CRC tenha 4 dígitos (se for menor, preenche com zeros à esquerda)
-    return crc.toString(16).toUpperCase().padStart(4, '0'); // Exemplo final: 'F59C'
+    return crc.toString(16).toUpperCase().padStart(4, '0'); // Exemplo final: '3BAB'
 }
 ```
 

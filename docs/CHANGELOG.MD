@@ -5,7 +5,7 @@ Todas as mudanças notáveis para este projeto serão documentadas neste arquivo
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2024-04-03
+## [1.1.0] - 2026-04-03
 
 ### Adicionado
 - **Infraestrutura de Testes**: Implementação de 22 testes unitários automatizados utilizando o framework **Vitest**.
@@ -25,6 +25,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.0.0] - 2024-04-02
+## [1.0.0] - 2026-04-02
 ### Lançamento Inicial
 - Versão base com suporte a validação de Pix, Cartão de Crédito e Boleto Bancário em um arquivo HTML único e scripts imperativos.

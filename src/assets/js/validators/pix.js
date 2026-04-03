@@ -21,7 +21,7 @@ const { IDS_WITH_SUBTAGS } = PIX_CONFIG;
  */
 export const analyzePixQrCode = (payload) => {
     if (!payload || payload.length === 0) {
-        return failure("Código PIX vazio", "EMPTY_INPUT");
+        return failure('Código PIX vazio', 'EMPTY_INPUT');
     }
 
     try {
@@ -32,9 +32,9 @@ export const analyzePixQrCode = (payload) => {
             return success({ fields: decodedTags, isCrcValid: hasValidChecksum });
         }
 
-        return failure("Código PIX inválido ou com CRC incorreto", "INVALID_PIX");
+        return failure('Código PIX inválido ou com CRC incorreto', 'INVALID_PIX');
     } catch (error) {
-        return failure("Erro ao decodificar estrutura do PIX: " + error.message, "PROCESS_ERROR");
+        return failure('Erro ao decodificar estrutura do PIX: ' + error.message, 'PROCESS_ERROR');
     }
 };
 

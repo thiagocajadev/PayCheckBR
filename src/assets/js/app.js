@@ -94,50 +94,50 @@ const onPaymentMethodSelected = (event) => {
  */
 const executeValidationPipeline = async (paymentMethodType) => {
     switch (paymentMethodType) {
-        case PAYMENT_TYPES.PIX: {
-            const inputField = document.getElementById('txtCopyPastePIX');
-            const analysisResult = analyzePixQrCode(inputField.value);
+    case PAYMENT_TYPES.PIX: {
+        const inputField = document.getElementById('txtCopyPastePIX');
+        const analysisResult = analyzePixQrCode(inputField.value);
             
-            if (analysisResult.isSuccess) {
-                notifyUserWithTooltip("Código PIX válido!", "success", "txtCopyPastePIX");
-                displayPixAnalysisReport(analysisResult.value, 'pixLogTable', 'pixLogBody');
-            } else {
-                notifyUserWithTooltip(analysisResult.error.message, "error", "txtCopyPastePIX");
-                document.getElementById('pixLogTable').classList.add('d-none');
-            }
-            break;
+        if (analysisResult.isSuccess) {
+            notifyUserWithTooltip('Código PIX válido!', 'success', 'txtCopyPastePIX');
+            displayPixAnalysisReport(analysisResult.value, 'pixLogTable', 'pixLogBody');
+        } else {
+            notifyUserWithTooltip(analysisResult.error.message, 'error', 'txtCopyPastePIX');
+            document.getElementById('pixLogTable').classList.add('d-none');
         }
+        break;
+    }
 
-        case PAYMENT_TYPES.CARD: {
-            const inputField = document.getElementById('txtCreditCard');
-            const analysisResult = await validateCreditCardData(inputField.value);
+    case PAYMENT_TYPES.CARD: {
+        const inputField = document.getElementById('txtCreditCard');
+        const analysisResult = await validateCreditCardData(inputField.value);
             
-            if (analysisResult.isSuccess) {
-                const message = analysisResult.value.isPartial ? "Cartão válido (dados parciais/offline)" : "Cartão e BIN validados com sucesso!";
-                const type = analysisResult.value.isPartial ? "warning" : "success";
+        if (analysisResult.isSuccess) {
+            const message = analysisResult.value.isPartial ? 'Cartão válido (dados parciais/offline)' : 'Cartão e BIN validados com sucesso!';
+            const type = analysisResult.value.isPartial ? 'warning' : 'success';
                 
-                notifyUserWithTooltip(message, type, "txtCreditCard");
-                displayCardAnalysisReport(analysisResult.value, 'creditCardLogTable', 'creditCardLogBody');
-            } else {
-                notifyUserWithTooltip(analysisResult.error.message, "error", "txtCreditCard");
-                document.getElementById('creditCardLogTable').classList.add('d-none');
-            }
-            break;
+            notifyUserWithTooltip(message, type, 'txtCreditCard');
+            displayCardAnalysisReport(analysisResult.value, 'creditCardLogTable', 'creditCardLogBody');
+        } else {
+            notifyUserWithTooltip(analysisResult.error.message, 'error', 'txtCreditCard');
+            document.getElementById('creditCardLogTable').classList.add('d-none');
         }
+        break;
+    }
 
-        case PAYMENT_TYPES.BOLETO: {
-            const inputField = document.getElementById('txtBankSlipBarcodeLine');
-            const analysisResult = analyzePaymentSlipLine(inputField.value);
+    case PAYMENT_TYPES.BOLETO: {
+        const inputField = document.getElementById('txtBankSlipBarcodeLine');
+        const analysisResult = analyzePaymentSlipLine(inputField.value);
             
-            if (analysisResult.isSuccess) {
-                notifyUserWithTooltip("Boleto identificado e validado!", "success", "txtBankSlipBarcodeLine");
-                displayBoletoAnalysisReport(analysisResult.value, 'bankSlipLogTable', 'bankSlipLogBody');
-            } else {
-                notifyUserWithTooltip(analysisResult.error.message, "error", "txtBankSlipBarcodeLine");
-                document.getElementById('bankSlipLogTable').classList.add('d-none');
-            }
-            break;
+        if (analysisResult.isSuccess) {
+            notifyUserWithTooltip('Boleto identificado e validado!', 'success', 'txtBankSlipBarcodeLine');
+            displayBoletoAnalysisReport(analysisResult.value, 'bankSlipLogTable', 'bankSlipLogBody');
+        } else {
+            notifyUserWithTooltip(analysisResult.error.message, 'error', 'txtBankSlipBarcodeLine');
+            document.getElementById('bankSlipLogTable').classList.add('d-none');
         }
+        break;
+    }
     }
 };
 

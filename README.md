@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="src/assets/img/logo-pay-check-br-flag.png" width="120" alt="PayCheckBR Logo">
-</p>
+<div align="center">
+
+<img src="src/assets/img/logo-pay-check-br-flag.png" width="480" alt="PayCheckBR Logo">
 
 # PayCheckBR
 
@@ -10,22 +10,35 @@
 [![Node version](https://img.shields.io/badge/node-20.x%20%7C%2022.x-green.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+---
+
+</div>
+
 👋 **Olá, dev!**
 
-O **PayCheckBR** é uma aplicação focada na transparência e validação técnica de meios de pagamento brasileiros. O projeto foi estruturado com os princípios de **Staff-level Engineering**, priorizando a simplicidade sofistica, resiliência e documentação através do código (**Narrative Coding**).
+> [!IMPORTANT]
+> **Este é um projeto para fins de estudo** sobre algoritmos de validação de pagamentos comuns no Brasil. O foco é a implementação e demonstração didática de checksums e protocolos de mercado (EMV, Febraban, Luhn).
 
-Este projeto é voltado para estudos e para compartilhar conhecimento com a comunidade sobre a anatomia de transações financeiras.
+O **PayCheckBR** é uma aplicação focada na transparência e validação técnica. O projeto segue princípios de **Staff-level Engineering**, priorizando a simplicidade, resiliência e a prática de **Narrative Coding**.
 
 ---
 
-## 🚀 Tecnologias e Arquitetura
+## 🏗️ Estrutura do Projeto
 
-O projeto foi modernizado para utilizar os padrões mais recentes da indústria:
+O projeto foi organizado para manter a raiz limpa e as preocupações separadas:
 
--   **ES Modules (ESM)**: Módulos nativos para uma estrutura limpa e manutenível.
--   **Vitest**: Suíte de 22 testes unitários automatizados garantindo a integridade dos cálculos (Luhn, Mod10, Mod11, CRC16).
--   **GitHub Actions**: Pipeline de CI/CD para validação automática em cada alteração.
--   **Narrative Coding**: Nomes expressivos e lógica autodocumentada seguindo padrões **EMV-QRCPS**, **FEBRABAN** e **ISO-IEC 7812**.
+-   [`/src`](src/): Código-fonte da aplicação (HTML, JS, CSS).
+-   [`/tests`](tests/): Suítes de testes unitários automatizados (22 testes).
+-   [`/docs`](docs/): Documentação técnica, especificações e histórico de mudanças.
+
+---
+
+## 🧪 Tecnologias
+
+-   **ES Modules (ESM)**: Modularização nativa.
+-   **Vitest**: Garantia de precisão dos algoritmos (Luhn, Mod10, Mod11, CRC16).
+-   **GitHub Actions**: Automação total de testes em cada push/PR.
+-   **ESLint**: Padronização e qualidade de código.
 
 ---
 
@@ -33,36 +46,41 @@ O projeto foi modernizado para utilizar os padrões mais recentes da indústria:
 
 Explore a anatomia de cada meio de pagamento:
 
--   [Validação de Pix (EMV QRCPS)](src/assets/docs/pix.md)
--   [Validação de Cartão (ISO/IEC 7812)](src/assets/docs/cartao.md)
--   [Validação de Boleto (FEBRABAN)](src/assets/docs/boleto.md)
+- [Validação de Pix (EMV QRCPS)](docs/pix.md)
+- [Validação de Cartão (ISO/IEC 7812)](docs/cartao.md)
+- [Validação de Boleto (FEBRABAN)](docs/boleto.md)
+
+<details>
+<summary><b>🛠️ Informações de Apoio & Ferramentas Externas</b></summary>
+
+### PIX - Pagamento Instantâneo Brasileiro
+- [Manual de Padrões para Iniciação do Pix (BACEN)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
+- [Validador de Testes (QR Decoder)](https://pix.nascent.com.br/tools/pix-qr-decoder/)
+- [Gerador de Pix para Testes](https://www.gerarpix.com.br/)
+
+### Cartão de Crédito
+- [Guia Detalhado: Validação de Cartões](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
+- [Gerador de Dados de Cartão (4Devs)](https://www.4devs.com.br/gerador_de_numero_cartao_credito)
+- [Validador de Número de Cartão (4Devs)](https://www.4devs.com.br/validador_numero_cartao_credito)
+- [Gerador de Imagem de Cartão Fictício](https://dnowdd.github.io/CreditCard-Image-Generator/)
+
+### Boleto Bancário
+- [Significado dos Números do Código de Barras (Tecmundo)](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
+- [Anatomia de um Boleto (Ttrix)](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
+- [Cálculo de Data de Vencimento e Fator](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
+- [Teste de Boleto Bancário (Netdinâmica)](https://www.netdinamica.com.br/boleto/teste-boleto.php)
+- [Estrutura SISPAG CNAB (Itaú)](https://download.itau.com.br/bankline/sispag_cnab.pdf)
+
+</details>
 
 ---
 
 ## ⚡ Histórico de Mudanças
 
-Acompanhe a evolução do projeto no [CHANGELOG.MD](CHANGELOG.MD).
+Acompanhe a evolução do projeto no [CHANGELOG.MD](docs/CHANGELOG.MD).
 
 ---
 
-## 🧭 Exemplos e Recursos Úteis
-
-Aqui estão as referências técnicos e projetos que serviram de base para as especificações:
-
-### PIX - Pagamento Instantâneo Brasileiro
-- [Manual de Padrões para Iniciação do Pix](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
-- [Manual BR Code (EMV)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf)
-- [Validador de Testes (QR Decoder)](https://pix.nascent.com.br/tools/pix-qr-decoder/)
-
-### Cartão de Crédito
-- [Guia sobre validação de cartões de crédito](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
-- [API para consulta BIN (ChargeBlast)](https://docs.chargeblast.com/reference/bin-lookup)
-
-### Boleto Bancário
-- [Significado dos Números do Código de Barras](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
-- [Anatomia de um Boleto](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
-- [Cálculo de Data de Vencimento e Fator](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
-
----
-
-Fique à vontade para explorar e contribuir! 🚀 Caso encontre algum erro ou tenha sugestões de melhoria, abra uma Issue ou envie um Pull Request.
+<p align="left">
+Fique à vontade para explorar e contribuir! 🚀 Caso encontre algum erro ou tenha sugestões, abra uma Issue ou envie um Pull Request.
+</p>

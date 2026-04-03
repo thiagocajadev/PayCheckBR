@@ -22,7 +22,7 @@ export const validateCreditCardData = async (rawCardNumber) => {
     const sanitizedCreditCardNumber = rawCardNumber.replace(/\D/g, '');
 
     if (!sanitizedCreditCardNumber || sanitizedCreditCardNumber.length === 0) {
-        return failure("Número do cartão vazio", "EMPTY_INPUT");
+        return failure('Número do cartão vazio', 'EMPTY_INPUT');
     }
 
     const detectedBrandMetadata = identifyCardBrandByPrefix(sanitizedCreditCardNumber);
@@ -33,11 +33,11 @@ export const validateCreditCardData = async (rawCardNumber) => {
         sanitizedCreditCardNumber.length <= detectedBrandMetadata.maxLength;
 
     if (!isLengthValid) {
-        return failure(`Comprimento inválido (esperado: ${detectedBrandMetadata.minLength}-${detectedBrandMetadata.maxLength})`, "INVALID_LENGTH");
+        return failure(`Comprimento inválido (esperado: ${detectedBrandMetadata.minLength}-${detectedBrandMetadata.maxLength})`, 'INVALID_LENGTH');
     }
 
     if (!isLuhnAlgorithmValid(sanitizedCreditCardNumber)) {
-        return failure("Número do cartão inválido (Falha no algoritmo de Luhn)", "LUHN_FAILED");
+        return failure('Número do cartão inválido (Falha no algoritmo de Luhn)', 'LUHN_FAILED');
     }
 
     // Part 2: Deep BIN Analysis (External Registry)
@@ -46,14 +46,14 @@ export const validateCreditCardData = async (rawCardNumber) => {
         const registryData = await queryBinInformationRegistry(binPrefix);
         
         if (registryData.error) {
-            return failure("BIN não encontrado ou inválido no registro externo", "BIN_NOT_FOUND");
+            return failure('BIN não encontrado ou inválido no registro externo', 'BIN_NOT_FOUND');
         }
 
         return success({
             brand: registryData.brand || detectedBrandMetadata.brand,
-            type: registryData.type || "Desconhecido",
-            issuer: registryData.issuer || "Desconhecido",
-            country: registryData.country || "Desconhecido",
+            type: registryData.type || 'Desconhecido',
+            issuer: registryData.issuer || 'Desconhecido',
+            country: registryData.country || 'Desconhecido',
             bin: binPrefix,
             masked: `${sanitizedCreditCardNumber.slice(0, 4)} **** **** ${sanitizedCreditCardNumber.slice(-4)}`,
             sequence: sanitizedCreditCardNumber.slice(6, 15),
@@ -64,9 +64,9 @@ export const validateCreditCardData = async (rawCardNumber) => {
         // Resilience: Safe fallback to local brand detection if external API fails (CORS or Network)
         return success({
             brand: detectedBrandMetadata.brand,
-            type: "Desconhecido (Offline)",
-            issuer: "Desconhecido",
-            country: "Desconhecido",
+            type: 'Desconhecido (Offline)',
+            issuer: 'Desconhecido',
+            country: 'Desconhecido',
             bin: binPrefix,
             masked: `${sanitizedCreditCardNumber.slice(0, 4)} **** **** ${sanitizedCreditCardNumber.slice(-4)}`,
             sequence: sanitizedCreditCardNumber.slice(6, 15),
@@ -88,7 +88,7 @@ const identifyCardBrandByPrefix = (cardNumber) => {
             return brandPattern;
         }
     }
-    return { brand: "Desconhecida", minLength: 13, maxLength: 19 };
+    return { brand: 'Desconhecida', minLength: 13, maxLength: 19 };
 };
 
 /**

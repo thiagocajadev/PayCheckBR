@@ -26,7 +26,7 @@ export const displayPixAnalysisReport = (pixData, containerId, bodyId) => {
     
     orderedTagIdentifiers.forEach(tagId => {
         const tag = pixData.fields[tagId];
-        const emvDefinition = EMV_DESCRIPTIONS[tagId] || "Tag EMV Desconhecida";
+        const emvDefinition = EMV_DESCRIPTIONS[tagId] || 'Tag EMV Desconhecida';
 
         if (SUB_FIELDS_EMV[tagId]) {
             // Case: Tag contains nested sub-tags (Templates)
@@ -57,14 +57,14 @@ export const displayCardAnalysisReport = (cardData, containerId, bodyId) => {
     tableBody.innerHTML = '';
 
     const cardReportEntries = [
-        { label: "Número do Cartão (mascarado)", value: cardData.masked, meta: `${cardData.length} dígitos` },
-        { label: "Bandeira do Cartão", value: cardData.brand, meta: "N/A" },
-        { label: "Tipo de Cartão", value: cardData.type, meta: "N/A" },
-        { label: "Emissor do Cartão", value: cardData.issuer, meta: "N/A" },
-        { label: "País de Emissão", value: cardData.country, meta: "N/A" },
-        { label: "IIN/BIN (Prefix)", value: cardData.bin, meta: "6 dígitos" },
-        { label: "Sequência Númerica", value: cardData.sequence, meta: "9 dígitos" },
-        { label: "Dígito Verificador", value: `<span class="highlight-verifier">${cardData.verifier}</span>`, meta: "1 dígito" }
+        { label: 'Número do Cartão (mascarado)', value: cardData.masked, meta: `${cardData.length} dígitos` },
+        { label: 'Bandeira do Cartão', value: cardData.brand, meta: 'N/A' },
+        { label: 'Tipo de Cartão', value: cardData.type, meta: 'N/A' },
+        { label: 'Emissor do Cartão', value: cardData.issuer, meta: 'N/A' },
+        { label: 'País de Emissão', value: cardData.country, meta: 'N/A' },
+        { label: 'IIN/BIN (Prefix)', value: cardData.bin, meta: '6 dígitos' },
+        { label: 'Sequência Númerica', value: cardData.sequence, meta: '9 dígitos' },
+        { label: 'Dígito Verificador', value: `<span class="highlight-verifier">${cardData.verifier}</span>`, meta: '1 dígito' }
     ];
 
     cardReportEntries.forEach((entry, index) => {
@@ -85,11 +85,11 @@ export const displayBoletoAnalysisReport = (boletoData, containerId, bodyId) => 
     tableBody.innerHTML = '';
 
     const boletoReportEntries = [
-        { label: "Formato Identificado", value: boletoData.type, meta: `${boletoData.length} dígitos` },
-        { label: "Instituição de Pagamento", value: `${boletoData.bank.code} (${boletoData.bank.name})`, meta: "Febraban Standard" },
-        { label: "Vencimento Calculado", value: boletoData.dueDate, meta: "Fator de Vencimento" },
-        { label: "Valor Nominal", value: boletoData.amount, meta: "Cálculo de Centavos" },
-        { label: "Conversão cruzada", value: boletoData.converted, meta: "Barcode ↔ Readable" }
+        { label: 'Formato Identificado', value: boletoData.type, meta: `${boletoData.length} dígitos` },
+        { label: 'Instituição de Pagamento', value: `${boletoData.bank.code} (${boletoData.bank.name})`, meta: 'Febraban Standard' },
+        { label: 'Vencimento Calculado', value: boletoData.dueDate, meta: 'Fator de Vencimento' },
+        { label: 'Valor Nominal', value: boletoData.amount, meta: 'Cálculo de Centavos' },
+        { label: 'Conversão cruzada', value: boletoData.converted, meta: 'Barcode ↔ Readable' }
     ];
 
     boletoReportEntries.forEach((entry, index) => {
@@ -114,8 +114,8 @@ export const notifyUserWithTooltip = (message, type, inputId) => {
     if (existingTooltip) existingTooltip.dispose();
 
     // Part 2: Styling the Input State
-    targetInputElement.classList.toggle("is-valid", type === "success" || type === "warning");
-    targetInputElement.classList.toggle("is-invalid", type === "error");
+    targetInputElement.classList.toggle('is-valid', type === 'success' || type === 'warning');
+    targetInputElement.classList.toggle('is-invalid', type === 'error');
 
     // Part 3: Deploying new Tooltip
     targetInputElement.setAttribute('title', message);
@@ -150,13 +150,13 @@ const buildEMVSubtagRow = (parentTagId, nestedTags) => {
     
     const subTable = document.createElement('table');
     subTable.className = 'table mb-0';
-    subTable.innerHTML = `<thead><tr><th></th><th>ID</th><th>Nome</th><th>Tamanho</th><th>Valor</th></tr></thead><tbody></tbody>`;
+    subTable.innerHTML = '<thead><tr><th></th><th>ID</th><th>Nome</th><th>Tamanho</th><th>Valor</th></tr></thead><tbody></tbody>';
     
     const tableBody = subTable.querySelector('tbody');
     
     Object.keys(nestedTags).sort().forEach(subTagId => {
         const subData = nestedTags[subTagId];
-        const subTagDefinition = SUB_FIELDS_EMV[parentTagId][subTagId] || "Sub-tag Desconhecida";
+        const subTagDefinition = SUB_FIELDS_EMV[parentTagId][subTagId] || 'Sub-tag Desconhecida';
         
         const tr = document.createElement('tr');
         tr.innerHTML = `<td></td><td>${subTagId}</td><td>${subTagDefinition}</td><td>${subData.subLength.toString().padStart(2, '0')}</td><td>${subData.subValue}</td>`;

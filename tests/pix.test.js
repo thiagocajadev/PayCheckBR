@@ -3,7 +3,7 @@ import { analyzePixQrCode } from '../src/assets/js/validators/pix.js';
 
 describe('Pix Validator', () => {
     // Valid sample from constants.js
-    const validPixData = '00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5915THIAGO CARVALHO6011SANTO ANDRE62200516PAGAMENTOOUT20246304F59C';
+    const validPixData = '00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5914THIAGO CAJAIBA6011SANTO ANDRE62200516PAGAMENTOOUT202463043BAB';
 
     it('should successfully analyze a valid Pix QR Code', () => {
         const result = analyzePixQrCode(validPixData);

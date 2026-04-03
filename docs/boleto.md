@@ -15,7 +15,7 @@ Existem dois formatos principais de boleto:
 - **Linha Digitável**: sequência de 47 dígitos que facilita a leitura e o pagamento.
 - **Código de Barras**: sequência de 44 dígitos que representa as mesmas informações da linha digitável.
 
-![bank-slip-details.png](../img/bank-slip-details.png)
+![bank-slip-details.png](img/bank-slip-details.png)
 
 ### Componentes do Boleto Bancário
 

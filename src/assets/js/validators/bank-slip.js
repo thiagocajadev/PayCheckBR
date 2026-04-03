@@ -21,7 +21,7 @@ export const analyzePaymentSlipLine = (rawInput) => {
     const sanitizedNumericLine = rawInput.replace(/\D/g, '');
 
     if (!sanitizedNumericLine || sanitizedNumericLine.length === 0) {
-        return failure("Boleto vazio", "EMPTY_INPUT");
+        return failure('Boleto vazio', 'EMPTY_INPUT');
     }
 
     if (sanitizedNumericLine.length === 44) {
@@ -30,7 +30,7 @@ export const analyzePaymentSlipLine = (rawInput) => {
         return processDigitableLineData(sanitizedNumericLine);
     }
 
-    return failure("Comprimento inválido (esperado: 44 ou 47 dígitos)", "INVALID_LENGTH");
+    return failure('Comprimento inválido (esperado: 44 ou 47 dígitos)', 'INVALID_LENGTH');
 };
 
 /**
@@ -39,7 +39,7 @@ export const analyzePaymentSlipLine = (rawInput) => {
  */
 const processBarcodePayload = (barcode) => {
     const bankCode = barcode.substring(0, 3);
-    const bankName = BANK_CODES[bankCode] || "Banco Desconhecido";
+    const bankName = BANK_CODES[bankCode] || 'Banco Desconhecido';
     const overallCheckDigit = parseInt(barcode.charAt(4), 10);
     
     // Part 2: Verify the overall barcode integrity (Mod11)
@@ -47,11 +47,11 @@ const processBarcodePayload = (barcode) => {
     const computedCheckDigit = computeMod11CheckDigit(payloadWithoutCheckDigit);
 
     if (overallCheckDigit !== computedCheckDigit) {
-        return failure(`Dígito verificador inválido (Esperado: ${computedCheckDigit}, Obtido: ${overallCheckDigit})`, "INVALID_VERIFIER");
+        return failure(`Dígito verificador inválido (Esperado: ${computedCheckDigit}, Obtido: ${overallCheckDigit})`, 'INVALID_VERIFIER');
     }
 
     return success({
-        type: "Código de Barras",
+        type: 'Código de Barras',
         bank: { code: bankCode, name: bankName },
         verifier: overallCheckDigit,
         dueDate: resolveExpiryDate(barcode.substring(5, 9)),
@@ -67,7 +67,7 @@ const processBarcodePayload = (barcode) => {
  */
 const processDigitableLineData = (digitableLine) => {
     const bankCode = digitableLine.substring(0, 3);
-    const bankName = BANK_CODES[bankCode] || "Banco Desconhecido";
+    const bankName = BANK_CODES[bankCode] || 'Banco Desconhecido';
     
     // Part 1: Extract segments and their verification digits
     const segment1 = digitableLine.substring(0, 9);
@@ -84,11 +84,11 @@ const processDigitableLineData = (digitableLine) => {
         computeMod10CheckDigit(segment3) === checkDigit3;
 
     if (!isSegmentIntegrityValid) {
-        return failure("Um ou mais dígitos verificadores de campo estão incorretos", "INVALID_FIELD_VERIFIER");
+        return failure('Um ou mais dígitos verificadores de campo estão incorretos', 'INVALID_FIELD_VERIFIER');
     }
 
     return success({
-        type: "Linha Digitável",
+        type: 'Linha Digitável',
         bank: { code: bankCode, name: bankName },
         verifiers: [checkDigit1, checkDigit2, checkDigit3],
         overallVerifier: digitableLine.charAt(32),
@@ -104,7 +104,7 @@ const processDigitableLineData = (digitableLine) => {
  * Weights: 2 to 9 cyclical.
  */
 const computeMod11CheckDigit = (payload) => {
-    const sequence = "4329876543298765432987654329876543298765432";
+    const sequence = '4329876543298765432987654329876543298765432';
     let weightedSum = 0;
 
     for (let i = 0; i < payload.length; i++) {
@@ -124,7 +124,7 @@ const computeMod11CheckDigit = (payload) => {
  */
 const resolveExpiryDate = (factor) => {
     const daysSinceBase = parseInt(factor, 10);
-    if (daysSinceBase === 0) return "Sem vencimento (A vista)";
+    if (daysSinceBase === 0) return 'Sem vencimento (A vista)';
 
     const baseDate = new Date(Date.UTC(1997, 9, 7));
     const expiryDate = new Date(baseDate.getTime() + (daysSinceBase * 86400000));
