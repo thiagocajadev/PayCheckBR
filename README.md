@@ -84,7 +84,7 @@ Acompanhe a evolução do projeto no [CHANGELOG.MD](docs/CHANGELOG.MD).
 
 ---
 
-## Novidades (v1.2.1)
+## Novidades (v1.2.2)
 
 - **Design Neobrutalista**: Interface moderna de alto contraste com sombras rígidas e estética "Staff Engineer".
 - **Anatomia do Pix**: Dissecação linear byte-a-byte do protocolo EMV QRCPS.

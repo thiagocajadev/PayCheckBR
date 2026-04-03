@@ -410,7 +410,7 @@ const App = () => {
                 {/* Footer */}
                 <footer className="text-center py-12 opacity-60 space-y-2">
                     <p className="text-xs font-bold uppercase tracking-widest">
-                        PayCheckBR v1.2.1 • {new Date().getFullYear()}
+                        PayCheckBR v1.2.2 • {new Date().getFullYear()}
                     </p>
                     <a 
                         href="https://github.com/thiagocajadev/PayCheckBR" 
