@@ -1,1 +1,16 @@
-﻿.idea/
+# AI Bootstrap Context
+.ai/
+.sdg-prompts/
+AI_INSTRUCTIONS.md
+CLAUDE.md
+
+# IDEs
+.idea/
+.vscode/
+
+# Dependencies & Build
+node_modules/
+dist/
+build/
+.env*
+*.log
