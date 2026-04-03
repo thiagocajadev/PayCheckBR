@@ -5,7 +5,13 @@ Todas as mudanças notáveis para este projeto serão documentadas neste arquivo
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2026-04-03
+
+### 🔧 Corrigido
+- **Deployment Strategy**: Mudança do `base` path de relativo (`./`) para absoluto (`/PayCheckBR/`) para garantir o carregamento correto dos assets no GitHub Pages.
+
 ## [1.2.2] - 2026-04-03
+
 
 ### 🔧 Corrigido
 - **Deployment Fix**: Configuração de `base: './'` no Vite para corrigir erros 404 de assets no GitHub Pages.
