@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { analyzePaymentSlipLine } from '../src/assets/js/validators/bank-slip.js';
+import { analyzePaymentSlipLine } from '../src/logic/validators/bank-slip.js';
 
 describe('Bank Slip (Boleto) Validator', () => {
     

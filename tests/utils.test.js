@@ -4,7 +4,7 @@ import {
     isLuhnAlgorithmValid, 
     formatAsBRLCurrency, 
     padWithLeadingZeros 
-} from '../src/assets/js/core/utils.js';
+} from '../src/logic/core/utils.js';
 
 describe('Core Utilities', () => {
     

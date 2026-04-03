@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
-import { validateCreditCardData } from '../src/assets/js/validators/credit-card.js';
+import { validateCreditCardData } from '../src/logic/validators/credit-card.js';
 
 // Clean up mocks after each test
-vi.mock('../src/assets/js/core/constants.js', async () => {
-    const actual = await vi.importActual('../src/assets/js/core/constants.js');
+vi.mock('../src/logic/core/constants.js', async () => {
+    const actual = await vi.importActual('../src/logic/core/constants.js');
     return {
         ...actual,
         API_URLS: { CHARGEBLAST: 'https://test-api.com' }

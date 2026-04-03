@@ -29,7 +29,7 @@ export const analyzePixQrCode = (payload) => {
         const hasValidChecksum = verifyPixChecksumCRC16(payload);
 
         if (Object.keys(decodedTags).length > 0 && hasValidChecksum) {
-            return success({ fields: decodedTags, isCrcValid: hasValidChecksum });
+            return success({ fields: decodedTags, isCrcValid: hasValidChecksum, raw: payload });
         }
 
         return failure('Código PIX inválido ou com CRC incorreto', 'INVALID_PIX');
