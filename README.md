@@ -6,6 +6,8 @@
 
 ### Validador Inteligente de Meios de Pagamento — Pix, Cartões e Boletos.
 
+**[Confira a versão online aqui](https://thiagocajadev.github.io/PayCheckBR/)**
+
 [![PayCheckBR CI](https://github.com/thiagocajadev/PayCheckBR/actions/workflows/ci.yml/badge.svg)](https://github.com/thiagocajadev/PayCheckBR/actions/workflows/ci.yml)
 [![Node version](https://img.shields.io/badge/node-20.x%20%7C%2022.x-green.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -14,7 +16,7 @@
 
 </div>
 
-👋 **Olá, dev!**
+**Olá, dev!**
 
 > [!IMPORTANT]
 > **Este é um projeto para fins de estudo** sobre algoritmos de validação de pagamentos comuns no Brasil. O foco é a implementação e demonstração didática de checksums e protocolos de mercado (EMV, Febraban, Luhn).
@@ -23,26 +25,26 @@ O **PayCheckBR** é uma aplicação focada na transparência e validação técn
 
 ---
 
-## 🏗️ Estrutura do Projeto
+## Estrutura do Projeto
 
 O projeto foi organizado para manter a raiz limpa e as preocupações separadas:
 
--   [`/src`](src/): Código-fonte da aplicação (HTML, JS, CSS).
--   [`/tests`](tests/): Suítes de testes unitários automatizados (22 testes).
--   [`/docs`](docs/): Documentação técnica, especificações e histórico de mudanças.
+- [`/src`](src/): Código-fonte da aplicação (HTML, JS, CSS).
+- [`/tests`](tests/): Suítes de testes unitários automatizados (22 testes).
+- [`/docs`](docs/): Documentação técnica, especificações e histórico de mudanças.
 
 ---
 
-## 🧪 Tecnologias
+## Tecnologias
 
--   **ES Modules (ESM)**: Modularização nativa.
--   **Vitest**: Garantia de precisão dos algoritmos (Luhn, Mod10, Mod11, CRC16).
--   **GitHub Actions**: Automação total de testes em cada push/PR.
--   **ESLint**: Padronização e qualidade de código.
+- **ES Modules (ESM)**: Modularização nativa.
+- **Vitest**: Garantia de precisão dos algoritmos (Luhn, Mod10, Mod11, CRC16).
+- **GitHub Actions**: Automação total de testes em cada push/PR.
+- **ESLint**: Padronização e qualidade de código.
 
 ---
 
-## 📚 Documentação Técnica
+## Documentação Técnica
 
 Explore a anatomia de cada meio de pagamento:
 
@@ -54,17 +56,20 @@ Explore a anatomia de cada meio de pagamento:
 <summary><b>🛠️ Informações de Apoio & Ferramentas Externas</b></summary>
 
 ### PIX - Pagamento Instantâneo Brasileiro
+
 - [Manual de Padrões para Iniciação do Pix (BACEN)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
 - [Validador de Testes (QR Decoder)](https://pix.nascent.com.br/tools/pix-qr-decoder/)
 - [Gerador de Pix para Testes](https://www.gerarpix.com.br/)
 
 ### Cartão de Crédito
+
 - [Guia Detalhado: Validação de Cartões](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
 - [Gerador de Dados de Cartão (4Devs)](https://www.4devs.com.br/gerador_de_numero_cartao_credito)
 - [Validador de Número de Cartão (4Devs)](https://www.4devs.com.br/validador_numero_cartao_credito)
 - [Gerador de Imagem de Cartão Fictício](https://dnowdd.github.io/CreditCard-Image-Generator/)
 
 ### Boleto Bancário
+
 - [Significado dos Números do Código de Barras (Tecmundo)](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
 - [Anatomia de um Boleto (Ttrix)](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
 - [Cálculo de Data de Vencimento e Fator](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
