@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="src/assets/img/logo-pay-check-br-flag.png" width="480" alt="PayCheckBR Logo">
-
-# PayCheckBR
+<img src="src/assets/img/logo.svg" width="480" alt="PayCheckBR Logo">
 
 ### Validador Inteligente de Meios de Pagamento — Pix, Cartões e Boletos.
 
@@ -80,9 +78,21 @@ Explore a anatomia de cada meio de pagamento:
 
 ---
 
-## ⚡ Histórico de Mudanças
+## Histórico de Mudanças
 
 Acompanhe a evolução do projeto no [CHANGELOG.MD](docs/CHANGELOG.MD).
+
+---
+
+## Novidades (v1.2.1)
+
+- **Design Neobrutalista**: Interface moderna de alto contraste com sombras rígidas e estética "Staff Engineer".
+- **Anatomia do Pix**: Dissecação linear byte-a-byte do protocolo EMV QRCPS.
+- **Raio-X de Boletos**: Análise profunda de posições FEBRABAN com exemplos didáticos.
+
+## Créditos e Agradecimentos
+
+- Todo o sistema de design e skills de UX foram acelerados pela tecnologia **[typeui.sh](https://typeui.sh)**.
 
 ---
 

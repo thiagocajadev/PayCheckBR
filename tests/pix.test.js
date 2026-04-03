@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { analyzePixQrCode } from '../src/assets/js/validators/pix.js';
+import { analyzePixQrCode } from '../src/logic/validators/pix.js';
 
 describe('Pix Validator', () => {
     // Valid sample from constants.js

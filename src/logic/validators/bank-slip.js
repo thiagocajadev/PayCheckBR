@@ -57,7 +57,8 @@ const processBarcodePayload = (barcode) => {
         dueDate: resolveExpiryDate(barcode.substring(5, 9)),
         amount: extractMonetaryValue(barcode.substring(9, 19)),
         converted: convertBarcodeToDigitableLine(barcode),
-        length: barcode.length
+        length: barcode.length,
+        raw: barcode
     });
 };
 
@@ -95,7 +96,8 @@ const processDigitableLineData = (digitableLine) => {
         dueDate: resolveExpiryDate(digitableLine.substring(33, 37)),
         amount: formatAsBRLCurrency(parseFloat(digitableLine.substring(37, 47)) / 100),
         converted: convertDigitableLineToBarcode(digitableLine),
-        length: digitableLine.length
+        length: digitableLine.length,
+        raw: digitableLine
     });
 };
 

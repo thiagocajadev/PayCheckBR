@@ -1,0 +1,13 @@
+<svg width="320" height="100" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Neobrutalist Shadow -->
+  <rect x="8" y="8" width="304" height="84" fill="#1C293C" transform="rotate(-1 160 50)" />
+  
+  <!-- Main Container -->
+  <rect x="4" y="4" width="304" height="84" fill="#FDC800" stroke="#1C293C" stroke-width="3" transform="rotate(-1 160 50)" />
+  
+  <!-- Logo Text -->
+  <text x="156" y="65" font-family="'Inter', sans-serif" font-weight="900" font-size="44" text-anchor="middle" letter-spacing="-3" transform="rotate(-1 160 50)" style="text-transform: uppercase;">
+    <tspan fill="#1C293C">PAYCHECK</tspan>
+    <tspan fill="#FFFFFF" stroke="#1C293C" stroke-width="1.8" stroke-linejoin="round">BR</tspan>
+  </text>
+</svg>
