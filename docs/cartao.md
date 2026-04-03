@@ -12,7 +12,7 @@ completa de IINs e de mais informações da instituição emissora.
 Os números dos cartões de crédito seguem um padrão estabelecido pela [ISO/IEC 7812](https://en.wikipedia.org/wiki/ISO/IEC_7812). Esse padrão define a composição do
 número do cartão, incluindo as informações sobre o tipo de cartão e o emissor.
 
-![card-details.png](../img/card-details.png)
+![card-details.png](img/card-details.png)
 
 Obs: número gerado via [4devs](https://www.4devs.com.br/gerador_de_numero_cartao_credito), apenas para estudo.
 

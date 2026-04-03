@@ -1,54 +1,91 @@
-# Validação de Pagamentos - Projeto em Andamento
+<div align="center">
 
-👋 Olá, dev!
+<img src="src/assets/img/logo-pay-check-br-flag.png" width="480" alt="PayCheckBR Logo">
 
-Este projeto é voltado para estudos de meios de pagamento e validação.
+# PayCheckBR
 
-A intenção única e exclusiva é compartilhar conhecimento com a comunidade.
+### Validador Inteligente de Meios de Pagamento — Pix, Cartões e Boletos.
 
----
+**[Confira a versão online aqui](https://thiagocajadev.github.io/PayCheckBR/)**
 
-Confira a versão atual [aqui](https://thiagocajadev.github.io/PayCheckBR/)
-
-## Documentação
-
-- [Validação de Pix](assets/docs/pix.md)
-- [Validação de Cartão](assets/docs/cartao.md)
-- [Validação de Boleto](assets/docs/boleto.md)
+[![PayCheckBR CI](https://github.com/thiagocajadev/PayCheckBR/actions/workflows/ci.yml/badge.svg)](https://github.com/thiagocajadev/PayCheckBR/actions/workflows/ci.yml)
+[![Node version](https://img.shields.io/badge/node-20.x%20%7C%2022.x-green.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## Exemplos e Recursos Úteis
+</div>
 
-Aqui estão algumas referências e todo agradecimento pelos projetos livres usados para estruturar o projeto. Use para consulta e testes:
+**Olá, dev!**
 
-PIX - PAGAMENTO INSTANTÂNEO BRASILEIRO
+> [!IMPORTANT]
+> **Este é um projeto para fins de estudo** sobre algoritmos de validação de pagamentos comuns no Brasil. O foco é a implementação e demonstração didática de checksums e protocolos de mercado (EMV, Febraban, Luhn).
 
-- [PIX - Manual Iniciação](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
-- [PIX - Manual BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf)
-- [PIX - Gerar PIX de testes](https://www.gerarpix.com.br/)
-- [PIX - Validador de testes](https://pix.nascent.com.br/tools/pix-qr-decoder/)
-
-CARTÃO DE CRÉDITO
-
-- [Cartão - Guia sobre validação de cartões de crédito](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
-- [Cartão - Gerar dados de cartão para testes](https://www.4devs.com.br/gerador_de_numero_cartao_credito)
-- [Cartão - Gerar imagem de um cartão fictício](https://dnowdd.github.io/CreditCard-Image-Generator/)
-- [Cartão - Validar cartão de testes](https://www.4devs.com.br/validador_numero_cartao_credito)
-- [Cartão - API para consulta BIN](https://docs.chargeblast.com/reference/bin-lookup)
-
-BOLETO BANCÁRIO
-
-- [BOLETO - SISPAG CNAB PDF - Itaú](https://download.itau.com.br/bankline/sispag_cnab.pdf)
-- [BOLETO - Significado dos Números do Código de Barras - Tecmundo](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
-- [BOLETO - Boleto.js - Guilherme Araujo](https://www.guilhermearaujo.dev/boleto.js/)
-- [BOLETO - Validação de Boleto Bancário - PHP Brasil](https://phpbrasil.com/artigo/JwMPBDcWnm36/boleto-bancario-facil-e-simples--parte-2)
-- [BOLETO - Anatomia de um Boleto - Ttrix](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
-- [BOLETO - Teste Boleto - Netdinâmica](https://www.netdinamica.com.br/boleto/teste-boleto.php)
-- [BOLETO - Calculo data de vencimento](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
+O **PayCheckBR** é uma aplicação focada na transparência e validação técnica. O projeto segue princípios de **Staff-level Engineering**, priorizando a simplicidade, resiliência e a prática de **Narrative Coding**.
 
 ---
 
-Fique à vontade para explorar e contribuir! 🚀
+## Estrutura do Projeto
 
-Caso encontre algum erro ou sugestão de melhoria, estou as ordens!
+O projeto foi organizado para manter a raiz limpa e as preocupações separadas:
+
+- [`/src`](src/): Código-fonte da aplicação (HTML, JS, CSS).
+- [`/tests`](tests/): Suítes de testes unitários automatizados (22 testes).
+- [`/docs`](docs/): Documentação técnica, especificações e histórico de mudanças.
+
+---
+
+## Tecnologias
+
+- **ES Modules (ESM)**: Modularização nativa.
+- **Vitest**: Garantia de precisão dos algoritmos (Luhn, Mod10, Mod11, CRC16).
+- **GitHub Actions**: Automação total de testes em cada push/PR.
+- **ESLint**: Padronização e qualidade de código.
+
+---
+
+## Documentação Técnica
+
+Explore a anatomia de cada meio de pagamento:
+
+- [Validação de Pix (EMV QRCPS)](docs/pix.md)
+- [Validação de Cartão (ISO/IEC 7812)](docs/cartao.md)
+- [Validação de Boleto (FEBRABAN)](docs/boleto.md)
+
+<details>
+<summary><b>🛠️ Informações de Apoio & Ferramentas Externas</b></summary>
+
+### PIX - Pagamento Instantâneo Brasileiro
+
+- [Manual de Padrões para Iniciação do Pix (BACEN)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
+- [Validador de Testes (QR Decoder)](https://pix.nascent.com.br/tools/pix-qr-decoder/)
+- [Gerador de Pix para Testes](https://www.gerarpix.com.br/)
+
+### Cartão de Crédito
+
+- [Guia Detalhado: Validação de Cartões](https://cleilsontechinfo.netlify.app/jekyll/update/2019/12/08/um-guia-completo-para-validar-e-formatar-cartoes-de-credito.html)
+- [Gerador de Dados de Cartão (4Devs)](https://www.4devs.com.br/gerador_de_numero_cartao_credito)
+- [Validador de Número de Cartão (4Devs)](https://www.4devs.com.br/validador_numero_cartao_credito)
+- [Gerador de Imagem de Cartão Fictício](https://dnowdd.github.io/CreditCard-Image-Generator/)
+
+### Boleto Bancário
+
+- [Significado dos Números do Código de Barras (Tecmundo)](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
+- [Anatomia de um Boleto (Ttrix)](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
+- [Cálculo de Data de Vencimento e Fator](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
+- [Teste de Boleto Bancário (Netdinâmica)](https://www.netdinamica.com.br/boleto/teste-boleto.php)
+- [Estrutura SISPAG CNAB (Itaú)](https://download.itau.com.br/bankline/sispag_cnab.pdf)
+
+</details>
+
+---
+
+## ⚡ Histórico de Mudanças
+
+Acompanhe a evolução do projeto no [CHANGELOG.MD](docs/CHANGELOG.MD).
+
+---
+
+<p align="left">
+Fique à vontade para explorar e contribuir! 🚀 Caso encontre algum erro ou tenha sugestões, abra uma Issue ou envie um Pull Request.
+</p>
