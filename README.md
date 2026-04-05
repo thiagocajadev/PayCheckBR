@@ -16,8 +16,7 @@
 
 **Olá, dev!**
 
-> [!IMPORTANT]
-> **Este é um projeto para fins de estudo** sobre algoritmos de validação de pagamentos comuns no Brasil. O foco é a implementação e demonstração didática de checksums e protocolos de mercado (EMV, Febraban, Luhn).
+> ⚠️ **Este é um projeto para fins de estudo** sobre algoritmos de validação de pagamentos comuns no Brasil. O foco é a implementação e demonstração didática de checksums e protocolos de mercado (EMV, Febraban, Luhn).
 
 O **PayCheckBR** é uma aplicação focada na transparência e validação técnica. O projeto segue princípios de **Staff-level Engineering**, priorizando a simplicidade, resiliência e a prática de **Narrative Coding**.
 
@@ -68,8 +67,7 @@ Explore a anatomia de cada meio de pagamento:
 
 ### Boleto Bancário
 
-> [!IMPORTANT]
-> **Fator de Vencimento (Reset 2025):** Em 22/02/2025, o fator de vencimento dos boletos foi reiniciado em **1000**, após atingir o limite de **9999**. Este validador já suporta o novo ciclo utilizando uma lógica de janela deslizante para identificar a data correta.
+> ⚠️ **Fator de Vencimento (Reset 2025):** Em 22/02/2025, o fator de vencimento dos boletos foi reiniciado em **1000**, após atingir o limite de **9999**. Este validador já suporta o novo ciclo utilizando uma lógica de janela deslizante para identificar a data correta.
 
 - [Cálculo de Data de Vencimento e Fator (Reset 2025)](https://www.caixa.gov.br/Downloads/cobranca-caixa/ESP_COD_BARRAS_SIGCB_COBRANCA_CAIXA.pdf)
 - [Anatomia de um Boleto (Ttrix)](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
