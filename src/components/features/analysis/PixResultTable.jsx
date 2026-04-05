@@ -60,13 +60,13 @@ const PixResultTable = ({ data }) => {
                                 {item.pos}
                             </td>
                             <td className={`p-3 font-mono text-xs text-center border-r-2 border-foreground/5 ${item.level > 0 ? 'pl-6' : ''}`}>
-                                <span className={item.level > 0 ? 'text-primary font-black' : 'font-black'}>
+                                <span className={item.level > 0 ? 'text-[#D9A600] font-black' : 'font-black'}>
                                     {item.tag}
                                 </span>
                             </td>
-                            <td className={`p-3 text-xs md:text-sm font-bold border-r-2 border-foreground/5 ${item.level > 0 ? 'italic text-primary/80' : ''}`}>
+                            <td className={`p-3 text-xs md:text-sm font-bold border-r-2 border-foreground/5 ${item.level > 0 ? 'italic text-[#D9A600]' : ''}`}>
                                 <div className="flex items-center gap-2">
-                                    {item.level > 0 && <span className="text-primary opacity-40">└─</span>}
+                                    {item.level > 0 && <span className="text-[#D9A600]/50">└─</span>}
                                     {item.desc}
                                 </div>
                             </td>
