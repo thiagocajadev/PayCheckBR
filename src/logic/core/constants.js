@@ -2,33 +2,33 @@
  * Shared constants and configuration for the PayCheckBR application.
  */
 
-export const API_URLS = {
+const API_URLS = {
     CHARGEBLAST: 'https://api.chargeblast.com/bin'
 };
 
-export const EXAMPLE_DATA = {
+const EXAMPLE_DATA = {
     PIX: '00020126360014BR.GOV.BCB.PIX0114+55119123456785204000053039865406100.555802BR5914THIAGO CAJAIBA6011SANTO ANDRE62200516PAGAMENTOOUT202463043BAB',
     CARD: '5464984762204819',
     BOLETO: '23796988500000200251234010001234200240012430'
 };
 
-export const PIX_CONFIG = {
+const PIX_CONFIG = {
     IDS_WITH_SUBTAGS: ['26', '27', '62', '80', '81']
 };
 
-export const PAYMENT_TYPES = {
+const PAYMENT_TYPES = {
     PIX: '1',
     CARD: '2',
     BOLETO: '3'
 };
 
-export const PAYMENT_OPTIONS = [
+const PAYMENT_OPTIONS = [
     { value: PAYMENT_TYPES.PIX, text: 'PIX' },
     { value: PAYMENT_TYPES.CARD, text: 'Cartão' },
     { value: PAYMENT_TYPES.BOLETO, text: 'Boleto' }
 ];
 
-export const EMV_DESCRIPTIONS = {
+const EMV_DESCRIPTIONS = {
     '00': 'Payload Format Indicator',
     '01': 'Point of Initiation Method',
     '04': 'Merchant Account Information – Cards',
@@ -47,7 +47,7 @@ export const EMV_DESCRIPTIONS = {
     '63': 'CRC16'
 };
 
-export const SUB_FIELDS_EMV = {
+const SUB_FIELDS_EMV = {
     '26': { '00': 'GUI', '01': 'PIX Key' },
     '27': { '00': 'GUI', '01': 'AccountId' },
     '62': { '05': 'Reference Label', '50': 'Payment system specific template' },
@@ -55,7 +55,7 @@ export const SUB_FIELDS_EMV = {
     '81': { '00': 'GUI', '01': 'Arrangement arbitrary info' }
 };
 
-export const CARD_BINS = [
+const CARD_BINS = [
     { brand: 'Visa', binRegex: /^4[0-9]{12}(?:[0-9]{3})?$/, minLength: 13, maxLength: 16 },
     { brand: 'MasterCard', binRegex: /^5[1-5][0-9]{14}$/, minLength: 16, maxLength: 16 },
     { brand: 'American Express', binRegex: /^3[47][0-9]{13}$/, minLength: 15, maxLength: 15 },
@@ -68,7 +68,7 @@ export const CARD_BINS = [
     { brand: 'Hipercard', binRegex: /^(606282\d{10}(\d{3})?)|(3841\d{15})$/, minLength: 13, maxLength: 19 }
 ];
 
-export const BANK_CODES = {
+const BANK_CODES = {
     '001': 'Banco do Brasil',
     '003': 'Banco da Amazônia',
     '004': 'Banco do Nordeste do Brasil',
@@ -117,4 +117,16 @@ export const BANK_CODES = {
     '102': 'XP Investimentos CCTVM S.A.',
     '119': 'Western Union do Brasil',
     '380': 'PicPay'
+};
+
+export {
+    API_URLS,
+    EXAMPLE_DATA,
+    PIX_CONFIG,
+    PAYMENT_TYPES,
+    PAYMENT_OPTIONS,
+    EMV_DESCRIPTIONS,
+    SUB_FIELDS_EMV,
+    CARD_BINS,
+    BANK_CODES
 };

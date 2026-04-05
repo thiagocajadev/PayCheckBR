@@ -10,32 +10,29 @@ import { padWithLeadingZeros } from '../core/utils.js';
 const { IDS_WITH_SUBTAGS } = PIX_CONFIG;
 
 /**
- * Analyzes a raw Pix QR Code payload (Copy & Paste format).
- * Narrative:
- * 1. Ensure the raw payload is not empty.
- * 2. Parse the EMV TLV (Tag-Length-Value) structure.
- * 3. Verify the mandatory CRC16 checksum at the end.
- *
- * @param {string} payload 
- * @returns {Result}
+ * Decodes nested sub-tags within a main EMV tag.
+ * @param {string} rawNestedData 
+ * @returns {Object}
  */
-export const analyzePixQrCode = (payload) => {
-    if (!payload || payload.length === 0) {
-        return failure('Código PIX vazio', 'EMPTY_INPUT');
+const decodeNestedEMVTags = (rawNestedData) => {
+    let currentPosition = 0;
+    const nestedTags = {};
+
+    while (currentPosition < rawNestedData.length) {
+        const subTagIdentifier = rawNestedData.substring(currentPosition, currentPosition + 2);
+        currentPosition += 2;
+
+        const subTagLengthSegment = rawNestedData.substring(currentPosition, currentPosition + 2);
+        const subTagLength = parseInt(subTagLengthSegment, 10);
+        currentPosition += 2;
+
+        const subTagValue = rawNestedData.substring(currentPosition, currentPosition + subTagLength);
+        currentPosition += subTagLength;
+
+        nestedTags[subTagIdentifier] = { subLength: subTagLength, subValue: subTagValue };
     }
 
-    try {
-        const decodedTags = decodeEMVTagLengthValue(payload);
-        const hasValidChecksum = verifyPixChecksumCRC16(payload);
-
-        if (Object.keys(decodedTags).length > 0 && hasValidChecksum) {
-            return success({ fields: decodedTags, isCrcValid: hasValidChecksum, raw: payload });
-        }
-
-        return failure('Código PIX inválido ou com CRC incorreto', 'INVALID_PIX');
-    } catch (error) {
-        return failure('Erro ao decodificar estrutura do PIX: ' + error.message, 'PROCESS_ERROR');
-    }
+    return nestedTags;
 };
 
 /**
@@ -76,45 +73,6 @@ const decodeEMVTagLengthValue = (rawData) => {
 };
 
 /**
- * Decodes nested sub-tags within a main EMV tag.
- * @param {string} rawNestedData 
- * @returns {Object}
- */
-const decodeNestedEMVTags = (rawNestedData) => {
-    let currentPosition = 0;
-    const nestedTags = {};
-
-    while (currentPosition < rawNestedData.length) {
-        const subTagIdentifier = rawNestedData.substring(currentPosition, currentPosition + 2);
-        currentPosition += 2;
-
-        const subTagLengthSegment = rawNestedData.substring(currentPosition, currentPosition + 2);
-        const subTagLength = parseInt(subTagLengthSegment, 10);
-        currentPosition += 2;
-
-        const subTagValue = rawNestedData.substring(currentPosition, currentPosition + subTagLength);
-        currentPosition += subTagLength;
-
-        nestedTags[subTagIdentifier] = { subLength: subTagLength, subValue: subTagValue };
-    }
-
-    return nestedTags;
-};
-
-/**
- * Verifies the integrity of the Pix payload using CRC16-CCITT (0x1021).
- * @param {string} payload 
- * @returns {boolean}
- */
-const verifyPixChecksumCRC16 = (payload) => {
-    const providedChecksum = payload.slice(-4);
-    const payloadWithoutChecksum = payload.slice(0, -4);
-    const computedChecksum = computeCRC16(payloadWithoutChecksum);
-    
-    return computedChecksum.toUpperCase() === providedChecksum.toUpperCase();
-};
-
-/**
  * Computes the CRC16-CCITT checksum for a given bitstream.
  * Default polynomial: 0x1021.
  * Initial value: 0xFFFF.
@@ -135,5 +93,63 @@ const computeCRC16 = (bitstream) => {
         }
     }
 
-    return padWithLeadingZeros(crcValue.toString(16).toUpperCase(), 4);
+    const crcHexString = padWithLeadingZeros(crcValue.toString(16).toUpperCase(), 4);
+
+    return crcHexString;
+};
+
+/**
+ * Verifies the integrity of the Pix payload using CRC16-CCITT (0x1021).
+ * @param {string} payload 
+ * @returns {boolean}
+ */
+const verifyPixChecksumCRC16 = (payload) => {
+    const providedChecksum = payload.slice(-4);
+    const payloadWithoutChecksum = payload.slice(0, -4);
+    const computedChecksum = computeCRC16(payloadWithoutChecksum);
+    
+    const isValidChecksum = computedChecksum.toUpperCase() === providedChecksum.toUpperCase();
+
+    return isValidChecksum;
+};
+
+/**
+ * Analyzes a raw Pix QR Code payload (Copy & Paste format).
+ * Narrative:
+ * 1. Ensure the raw payload is not empty.
+ * 2. Parse the EMV TLV (Tag-Length-Value) structure.
+ * 3. Verify the mandatory CRC16 checksum at the end.
+ *
+ * @param {string} payload 
+ * @returns {Result}
+ */
+const analyzePixQrCode = (payload) => {
+    if (!payload || payload.length === 0) {
+        const emptyInputFailure = failure('Código PIX vazio', 'EMPTY_INPUT');
+        return emptyInputFailure;
+    }
+
+    try {
+        const decodedTags = decodeEMVTagLengthValue(payload);
+        const hasValidChecksum = verifyPixChecksumCRC16(payload);
+
+        if (Object.keys(decodedTags).length > 0 && hasValidChecksum) {
+            const successAnalysis = success({ 
+                fields: decodedTags, 
+                isCrcValid: hasValidChecksum, 
+                raw: payload 
+            });
+            return successAnalysis;
+        }
+
+        const invalidPixFailure = failure('Código PIX inválido ou com CRC incorreto', 'INVALID_PIX');
+        return invalidPixFailure;
+    } catch (error) {
+        const processErrorFailure = failure('Erro ao decodificar estrutura do PIX: ' + error.message, 'PROCESS_ERROR');
+        return processErrorFailure;
+    }
+};
+
+export {
+    analyzePixQrCode
 };

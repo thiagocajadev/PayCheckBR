@@ -15,7 +15,7 @@
  * @param {string} numericValue 
  * @returns {number} The calculated verification digit (0-9).
  */
-export const computeMod10CheckDigit = (numericValue) => {
+const computeMod10CheckDigit = (numericValue) => {
     let weightedSum = 0;
     let multiplier = 2;
 
@@ -32,7 +32,9 @@ export const computeMod10CheckDigit = (numericValue) => {
     }
 
     const remainder = weightedSum % 10;
-    return remainder === 0 ? 0 : 10 - remainder;
+    const checkDigit = remainder === 0 ? 0 : 10 - remainder;
+
+    return checkDigit;
 };
 
 /**
@@ -45,7 +47,7 @@ export const computeMod10CheckDigit = (numericValue) => {
  * @param {string} cardNumber 
  * @returns {boolean} True if the number passes the integrity check.
  */
-export const isLuhnAlgorithmValid = (cardNumber) => {
+const isLuhnAlgorithmValid = (cardNumber) => {
     let totalSum = 0;
     let doubleNext = false;
 
@@ -61,7 +63,9 @@ export const isLuhnAlgorithmValid = (cardNumber) => {
         doubleNext = !doubleNext;
     }
 
-    return totalSum % 10 === 0;
+    const isValid = totalSum % 10 === 0;
+
+    return isValid;
 };
 
 /**
@@ -69,9 +73,11 @@ export const isLuhnAlgorithmValid = (cardNumber) => {
  * @param {number|string} amount 
  * @returns {string} Formatted string (e.g., "R$ 1.234,56")
  */
-export const formatAsBRLCurrency = (amount) => {
+const formatAsBRLCurrency = (amount) => {
     const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
-    return `R$ ${numericAmount.toFixed(2).replace('.', ',')}`;
+    const formattedCurrency = `R$ ${numericAmount.toFixed(2).replace('.', ',')}`;
+
+    return formattedCurrency;
 };
 
 /**
@@ -80,6 +86,15 @@ export const formatAsBRLCurrency = (amount) => {
  * @param {number} targetLength 
  * @returns {string} Fixed-length padded string.
  */
-export const padWithLeadingZeros = (value, targetLength) => {
-    return value.toString().padStart(targetLength, '0');
+const padWithLeadingZeros = (value, targetLength) => {
+    const paddedValue = value.toString().padStart(targetLength, '0');
+
+    return paddedValue;
+};
+
+export {
+    computeMod10CheckDigit,
+    isLuhnAlgorithmValid,
+    formatAsBRLCurrency,
+    padWithLeadingZeros
 };
