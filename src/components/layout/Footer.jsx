@@ -4,7 +4,7 @@ import pkg from '../../../package.json';
 
 const Footer = () => {
     return (
-        <footer className="text-center py-12 opacity-60 space-y-2">
+        <footer className="text-center py-4 opacity-60 space-y-1">
             <p className="text-xs font-bold uppercase tracking-widest">
                 PayCheckBR v{pkg.version} • {new Date().getFullYear()}
             </p>

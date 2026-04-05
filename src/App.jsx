@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { CreditCard, Receipt, QrCode, Info, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -18,6 +19,22 @@ const App = () => {
         loadSample
     } = usePaymentAnalysis();
 
+    const variants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: (i + 1) * 0.4,
+                duration: 0.8,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20,
+                ease: "easeOut"
+            }
+        })
+    };
+
     const paymentTypes = [
         { id: 'pix', label: 'Pix', icon: <QrCode className="w-5 h-5" /> },
         { id: 'card', label: 'Cartão', icon: <CreditCard className="w-5 h-5" /> },
@@ -26,12 +43,20 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-surface p-4 md:p-8 font-sans text-foreground flex flex-col items-center justify-center">
-            <div className="max-w-4xl w-full space-y-8 py-12">
+            <div className="max-w-4xl w-full space-y-6 py-4">
                 
-                <Header />
+                <motion.div custom={0} initial="hidden" animate="visible" variants={variants}>
+                    <Header />
+                </motion.div>
 
                 {/* Main Card */}
-                <main className="neo-card p-6 md:p-10 space-y-8 bg-white relative overflow-hidden">
+                <motion.main 
+                    custom={1}
+                    initial="hidden"
+                    animate="visible"
+                    variants={variants}
+                    className="neo-card p-6 md:p-8 space-y-6 bg-white relative overflow-hidden min-h-[350px] flex flex-col justify-center"
+                >
                     <div className="absolute top-0 right-0 w-24 h-24 bg-primary border-l-neo border-b-neo transform translate-x-12 -translate-y-12 rotate-45 hidden md:block" />
 
                     {/* Type Selector */}
@@ -101,7 +126,7 @@ const App = () => {
 
                     {/* Result Tables */}
                     {result?.isSuccess && (
-                        <div className="space-y-6 pt-4 border-t-2 border-foreground/10">
+                        <div className="space-y-6 pt-6 border-t-2 border-foreground/10">
                             <h3 className="font-black uppercase flex items-center gap-2 italic">
                                 <Info className="w-5 h-5 text-primary fill-primary/20" />
                                 Detalhes da Análise
@@ -117,14 +142,17 @@ const App = () => {
                             {paymentType === 'boleto' && <BoletoResultTable data={result.value} />}
                         </div>
                     )}
-                </main>
+                </motion.main>
 
-                <Footer />
+                <motion.div custom={2} initial="hidden" animate="visible" variants={variants}>
+                    <Footer />
+                </motion.div>
             </div>
 
             <style dangerouslySetInnerHTML={{ __html: `
                 .outline-text {
-                    -webkit-text-stroke: 1.5px #1C293C;
+                    -webkit-text-stroke: 2.5px #1C293C;
+                    paint-order: stroke fill;
                 }
             `}} />
         </div>
