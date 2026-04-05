@@ -124,20 +124,24 @@ const verifyPixChecksumCRC16 = (payload) => {
  * @returns {Result}
  */
 const analyzePixQrCode = (payload) => {
-    if (!payload || payload.length === 0) {
+    if (!payload || payload.trim().length === 0) {
         const emptyInputFailure = failure('Código PIX vazio', 'EMPTY_INPUT');
         return emptyInputFailure;
     }
 
+    // Sanitize input: Remove only line breaks and tabs that might come from copy-pasting
+    // We avoid removing spaces (\s) because they can be part of meaningful data (e.g. Tag 59 Merchant Name)
+    const sanitizedPayload = payload.replace(/[\n\r\t]/g, '').trim();
+
     try {
-        const decodedTags = decodeEMVTagLengthValue(payload);
-        const hasValidChecksum = verifyPixChecksumCRC16(payload);
+        const decodedTags = decodeEMVTagLengthValue(sanitizedPayload);
+        const hasValidChecksum = verifyPixChecksumCRC16(sanitizedPayload);
 
         if (Object.keys(decodedTags).length > 0 && hasValidChecksum) {
             const successAnalysis = success({ 
                 fields: decodedTags, 
                 isCrcValid: hasValidChecksum, 
-                raw: payload 
+                raw: sanitizedPayload 
             });
             return successAnalysis;
         }

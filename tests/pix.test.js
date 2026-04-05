@@ -37,4 +37,18 @@ describe('Pix Validator', () => {
         expect(failureResult.error.code).toBe('EMPTY_INPUT');
     });
 
+    it('should successfully analyze a Pix QR Code with whitespaces and newlines', () => {
+        const multiLinePix = '00020104141234567890123426660014BR.GOV.BCB.PIX014466756C616E6F32303139406578616\n' +
+            'D706C652E636F6D27300012BR.COM.OUTRO011001234567895204000053039865406123.45580\n' +
+            '2BR5915NOMEDORECEBEDOR6008BRASILIA61087007490062530515RP12345678-\n' +
+            '201950300017BR.GOV.BCB.BRCODE01051.0.080450014BR.GOV.BCB.PIX0123PADRAO.URL.PIX/0\n' +
+            '123ABCD81390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304EB76';
+        
+        const analysis = analyzePixQrCode(multiLinePix);
+
+        expect(analysis.isSuccess).toBe(true);
+        expect(analysis.value.isCrcValid).toBe(true);
+        expect(analysis.value.raw).not.toContain('\n');
+    });
+
 });
