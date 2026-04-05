@@ -1,6 +1,6 @@
 {
   "name": "paycheckbr",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Validador Inteligente de Meios de Pagamento — Pix, Cartões e Boletos.",
   "type": "module",
   "scripts": {
