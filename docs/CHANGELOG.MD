@@ -4,8 +4,17 @@ Todas as mudanças notáveis para este projeto serão documentadas neste arquivo
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.3.0] - 2026-04-05
 
-## [1.2.3] - 2026-04-03
+### 🚀 Adicionado
+- **Conformidade FEBRABAN 2025**: Suporte completo ao reset do fator de vencimento de boletos utilizando a estratégia de janela deslizante (10 anos).
+- **Documentação Técnica do Boleto**: Novo guia detalhado em `docs/boleto.md` sobre os ciclos do fator de vencimento.
+
+### 🎨 Alterado
+- **Narrative Coding (v2)**: Refatoração profunda da camada de lógica utilizando variáveis explicativas para cálculos, tomadas de decisão e objetos compostos.
+- **Governança de Exports**: Padronização de exportações centralizadas no fim de cada módulo para melhor controle de API.
+- **Modernização de Testes**: Suítes de teste refatoradas para utilizar "Narrative Testing" e determinismo temporal (Mock Clock).
+- **README UX**: Melhoria na compatibilidade de alertas visuais para dispositivos mobile e GitHub UI.
 
 ### 🔧 Corrigido
 - **Deployment Strategy**: Mudança do `base` path de relativo (`./`) para absoluto (`/PayCheckBR/`) para garantir o carregamento correto dos assets no GitHub Pages.
