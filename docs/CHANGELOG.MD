@@ -4,6 +4,20 @@ Todas as mudanças notáveis para este projeto serão documentadas neste arquivo
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.4.0] - 2026-04-05
+
+### 🚀 Adicionado
+- **ViewModel Orchestration**: Refatoração do `App.jsx` para um modelo puramente declarativo, movendo lógica de negócio para o hook `usePaymentAnalysis`.
+- **Animações Stony**: Entrada rítmica escalonada (Header -> Main -> Footer) utilizando `framer-motion` com física de mola (Hard Bounce).
+- **Design System Refinement**: Introdução do token de cor `accent` (#D9A600) para garantir alto contraste e legibilidade em campos técnicos sobre fundo branco.
+- **Robustez de Entrada**: Lógica de higienização de payload PIX para suportar códigos multi-linha copiados de PDFs e chats sem corromper dados internos.
+
+### 🎨 Alterado
+- **Zero-Scroll Experience**: Otimização do layout vertical para garantir que a aplicação caiba perfeitamente no viewport inicial em resoluções padrão.
+- **Anatomia Pix**: Reordenação de colunas para o padrão EMV (Posição, ID, Nome EMV, Tam, Valor) e padronização de labels.
+- **Grades Técnicas**: Implementação de bordas separadoras em todas as colunas de análise para melhor escaneabilidade visual.
+- **Logo Rendering**: Ajuste de `paint-order` e espessura de contorno (2.5px) para preservar a integridade das curvas da fonte no logo.
+
 ## [1.3.0] - 2026-04-05
 
 ### 🚀 Adicionado
