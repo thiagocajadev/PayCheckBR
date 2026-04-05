@@ -46,10 +46,10 @@ const PixResultTable = ({ data }) => {
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="bg-foreground text-white border-b-neo border-foreground font-black text-xs uppercase tracking-widest">
-                        <th className="p-3 w-28 text-center">Posição</th>
-                        <th className="p-3 w-16 text-center">Tag</th>
-                        <th className="p-3 w-16 text-center">Tamanho</th>
-                        <th className="p-3">Valor (Extraído)</th>
+                        <th className="p-3 w-28 text-center border-r-2 border-white/10 text-white/90">Posição</th>
+                        <th className="p-3 w-16 text-center border-r-2 border-white/10 text-white/90">Tag</th>
+                        <th className="p-3 w-16 text-center border-r-2 border-white/10 text-white/90">Tamanho</th>
+                        <th className="p-3 border-r-2 border-white/10 text-white/90">Valor (Extraído)</th>
                         <th className="p-3">Descrição do Segmento</th>
                     </tr>
                 </thead>
@@ -67,7 +67,7 @@ const PixResultTable = ({ data }) => {
                             <td className="p-3 font-mono text-xs text-center border-r-2 border-foreground/5 text-foreground/60">
                                 {item.length}
                             </td>
-                            <td className="p-3 font-mono text-sm break-all font-bold">
+                            <td className="p-3 font-mono text-sm break-all font-bold border-r-2 border-foreground/5">
                                 {item.tag === '63' ? (
                                     <span className="bg-danger text-white px-2 py-0.5 rounded-none border-1 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                         {item.value}

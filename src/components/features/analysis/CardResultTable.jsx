@@ -17,9 +17,9 @@ const CardResultTable = ({ data }) => {
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="bg-foreground text-white border-b-neo border-foreground font-black text-xs uppercase tracking-widest">
-                        <th className="p-3 w-16 text-center">ID</th>
-                        <th className="p-3">Tipo</th>
-                        <th className="p-3 w-32">Tamanho</th>
+                        <th className="p-3 w-16 text-center border-r-2 border-white/10 text-white/90">ID</th>
+                        <th className="p-3 border-r-2 border-white/10 text-white/90">Tipo</th>
+                        <th className="p-3 w-32 border-r-2 border-white/10 text-white/90">Tamanho</th>
                         <th className="p-3">Valor</th>
                     </tr>
                 </thead>
@@ -29,10 +29,10 @@ const CardResultTable = ({ data }) => {
                             <td className="p-3 font-black text-xs border-r-2 border-foreground/5 w-16 text-center tabular-nums bg-surface/30">
                                 {f.id}
                             </td>
-                            <td className="p-3 font-bold text-sm">
+                            <td className="p-3 font-bold text-sm border-r-2 border-foreground/5">
                                 {f.type}
                             </td>
-                            <td className="p-3 font-mono text-xs text-foreground/60 w-32">
+                            <td className="p-3 font-mono text-xs text-foreground/60 w-32 border-r-2 border-foreground/5">
                                 {f.size}
                             </td>
                             <td className="p-3 font-mono text-sm break-all font-bold">

@@ -74,9 +74,9 @@ const BoletoResultTable = ({ data }) => {
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="bg-foreground text-white border-b-neo border-foreground font-black text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">
-                        <th className="p-3 w-12 text-center">ID</th>
-                        <th className="p-3 w-20 md:w-24 text-center">Posição</th>
-                        <th className="p-3">Descrição do Protocolo</th>
+                        <th className="p-3 w-12 text-center border-r-2 border-white/10 text-white/90">ID</th>
+                        <th className="p-3 w-20 md:w-24 text-center border-r-2 border-white/10 text-white/90">Posição</th>
+                        <th className="p-3 border-r-2 border-white/10 text-white/90">Descrição do Protocolo</th>
                         <th className="p-3">Valor Extraído</th>
                     </tr>
                 </thead>
@@ -86,10 +86,10 @@ const BoletoResultTable = ({ data }) => {
                             <td className="p-3 font-black text-xs border-r-2 border-foreground/5 w-12 text-center tabular-nums bg-surface/30">
                                 {f.id}
                             </td>
-                            <td className="p-3 font-mono text-[10px] md:text-xs text-foreground/60 w-20 md:w-24 text-center tabular-nums">
+                            <td className="p-3 font-mono text-[10px] md:text-xs text-foreground/60 w-20 md:w-24 text-center tabular-nums border-r-2 border-foreground/5">
                                 {f.pos}
                             </td>
-                            <td className="p-3 font-bold text-xs md:text-sm">
+                            <td className="p-3 font-bold text-xs md:text-sm border-r-2 border-foreground/5">
                                 {f.label}
                             </td>
                             <td className={`p-3 font-mono font-bold ${f.pos === 'COMPLETO' ? 'text-[10px] md:text-[11px] whitespace-nowrap overflow-x-auto max-w-[300px] md:max-w-none' : 'text-xs md:text-sm break-all'}`}>
