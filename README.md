@@ -68,11 +68,14 @@ Explore a anatomia de cada meio de pagamento:
 
 ### Boleto Bancário
 
-- [Significado dos Números do Código de Barras (Tecmundo)](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
+> [!IMPORTANT]
+> **Fator de Vencimento (Reset 2025):** Em 22/02/2025, o fator de vencimento dos boletos foi reiniciado em **1000**, após atingir o limite de **9999**. Este validador já suporta o novo ciclo utilizando uma lógica de janela deslizante para identificar a data correta.
+
+- [Cálculo de Data de Vencimento e Fator (Reset 2025)](https://www.caixa.gov.br/Downloads/cobranca-caixa/ESP_COD_BARRAS_SIGCB_COBRANCA_CAIXA.pdf)
 - [Anatomia de um Boleto (Ttrix)](https://www.ttrix.com/apple/iphone/boletoscan/boletoanatomia.html)
-- [Cálculo de Data de Vencimento e Fator](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
 - [Teste de Boleto Bancário (Netdinâmica)](https://www.netdinamica.com.br/boleto/teste-boleto.php)
 - [Estrutura SISPAG CNAB (Itaú)](https://download.itau.com.br/bankline/sispag_cnab.pdf)
+- [Significado dos Números do Código de Barras (Tecmundo)](https://www.tecmundo.com.br/banco/38818-o-que-significa-cada-numero-do-codigo-de-barras-de-um-boleto-ilustracao-.htm)
 
 </details>
 

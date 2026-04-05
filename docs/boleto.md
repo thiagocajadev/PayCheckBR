@@ -22,57 +22,60 @@ Existem dois formatos principais de boleto:
 Abaixo, os principais componentes do boleto e suas funções:
 
 1. **Código do Banco**:
-    - Representa o código de compensação do banco emissor do boleto.
-    - Exemplo: `237` para o Banco Bradesco.
+   - Representa o código de compensação do banco emissor do boleto.
+   - Exemplo: `237` para o Banco Bradesco.
 
 2. **Dígito Verificador**:
-    - Valida a integridade do boleto, garantindo que os dados foram digitados corretamente.
+   - Valida a integridade do boleto, garantindo que os dados foram digitados corretamente.
 
 3. **Valor do Boleto**:
-    - Indica o valor total a ser pago, localizado em posições específicas dependendo se é código de barras ou linha
-      digitável.
+   - Indica o valor total a ser pago, localizado em posições específicas dependendo se é código de barras ou linha
+     digitável.
 
 4. **Fator de Vencimento**:
-    - Calculado com base em uma data de referência, representa a data de vencimento do boleto.
+   - Calculado com base em uma data de referência, representa a data de vencimento do boleto.
 
 5. **Linha Digitável e Código de Barras**:
-    - A linha digitável é a sequência legível e segmentada para facilitar o pagamento. O código de barras contém o mesmo
-      valor, mas sem separação.
+   - A linha digitável é a sequência legível e segmentada para facilitar o pagamento. O código de barras contém o mesmo
+     valor, mas sem separação.
 
 ### Exemplo de Código de Barras (44 dígitos)
+
 ```plaintext
 23796988500000200251234010001234200240012430
 ```
 
 Separado em segmentos conforme o padrão TLV (Type, Length, Value), incluindo os principais campos:
 
-| **ID** | **Tipo**                   | **Tamanho**                  | **Valor**                                                                      |
-|--------|----------------------------|------------------------------|--------------------------------------------------------------------------------|
-| 1      | Tipo de Entrada            | 44 dígitos                   | Código de Barras                                                               |
-| 2      | Banco                      | 3 dígitos (posição 1 a 3)    | 237 (Banco Bradesco)                                                           |
-| 3      | Dígito Verificador         | 1 dígito (posição 5)         | ~~2379~~  **6**                                                                |
-| 4      | Data de Vencimento         | 4 dígitos (posição 6 a 9)    | ~~23796~~  **9885** (30/10/2024)                                               |
-| 5      | Valor                      | 10 dígitos (posição 10 a 19) | ~~237969885~~  **0000020025** (R$ 200,25)                                      |
-| 6      | Linha Digitável Convertida | 47 dígitos                   | 23791.2340  **5** 10001.23420  **1** 02400.12430  **7**   **6** 98850000020025 |
+| **ID** | **Tipo**                   | **Tamanho**                  | **Valor**                                                                 |
+| ------ | -------------------------- | ---------------------------- | ------------------------------------------------------------------------- |
+| 1      | Tipo de Entrada            | 44 dígitos                   | Código de Barras                                                          |
+| 2      | Banco                      | 3 dígitos (posição 1 a 3)    | 237 (Banco Bradesco)                                                      |
+| 3      | Dígito Verificador         | 1 dígito (posição 5)         | ~~2379~~ **6**                                                            |
+| 4      | Data de Vencimento         | 4 dígitos (posição 6 a 9)    | ~~23796~~ **9885** (30/10/2024)                                           |
+| 5      | Valor                      | 10 dígitos (posição 10 a 19) | ~~237969885~~ **0000020025** (R$ 200,25)                                  |
+| 6      | Linha Digitável Convertida | 47 dígitos                   | 23791.2340 **5** 10001.23420 **1** 02400.12430 **7** **6** 98850000020025 |
 
 ### Exemplo de Linha Digitável (47 dígitos)
+
 ```plaintext
 23791.23405 10001.234201 02400.124307 6 98850000020025
 ```
 
-| **ID** | **Tipo**                    | **Tamanho**                     | **Valor**                                                             |
-|--------|-----------------------------|---------------------------------|-----------------------------------------------------------------------|
-| 1      | Tipo de Entrada             | 47 dígitos                      | Linha Digitável                                                       |
-| 2      | Banco                       | 3 dígitos (posição 1 a 3)       | 237 (Banco Bradesco)                                                  |
-| 3      | Dígitos Verificadores       | 3 dígitos (posições 10, 21, 32) | ~~237912340~~  **5**  ~~1000123420~~  **1**  ~~0240012430~~  **7**    |
-| 4      | Dígito Verificador Geral    | 1 dígito (posição 33)           | ~~23791234051000123420102400124307~~  **6**                           |
-| 5      | Data de Vencimento          | 4 dígitos (posição 34 a 37)     | ~~237912340510001234201024001243076~~  **9885** (30/10/2024)          |
-| 6      | Valor                       | 10 dígitos (posição 38 a 47)    | ~~2379123405100012342010240012430769885~~  **0000020025** (R$ 200,25) |
-| 7      | Código de Barras Convertido | 44 dígitos                      | 2379  **6**  988500000200251234010001234200240012430                  |
+| **ID** | **Tipo**                    | **Tamanho**                     | **Valor**                                                            |
+| ------ | --------------------------- | ------------------------------- | -------------------------------------------------------------------- |
+| 1      | Tipo de Entrada             | 47 dígitos                      | Linha Digitável                                                      |
+| 2      | Banco                       | 3 dígitos (posição 1 a 3)       | 237 (Banco Bradesco)                                                 |
+| 3      | Dígitos Verificadores       | 3 dígitos (posições 10, 21, 32) | ~~237912340~~ **5** ~~1000123420~~ **1** ~~0240012430~~ **7**        |
+| 4      | Dígito Verificador Geral    | 1 dígito (posição 33)           | ~~23791234051000123420102400124307~~ **6**                           |
+| 5      | Data de Vencimento          | 4 dígitos (posição 34 a 37)     | ~~237912340510001234201024001243076~~ **9885** (30/10/2024)          |
+| 6      | Valor                       | 10 dígitos (posição 38 a 47)    | ~~2379123405100012342010240012430769885~~ **0000020025** (R$ 200,25) |
+| 7      | Código de Barras Convertido | 44 dígitos                      | 2379 **6** 988500000200251234010001234200240012430                   |
 
 ### Validação do Boleto
 
 A validação do boleto utiliza dois principais métodos:
+
 - **Mod10**: para validar segmentos específicos da linha digitável.
 - **Mod11**: para o cálculo do dígito verificador do boleto.
 
@@ -86,8 +89,8 @@ códigos e explicações didáticas para facilitar o entendimento.
 
 ### Dígito Verificador
 
-O dígito verificador no boleto é utilizado para garantir a integridade dos dados. Ele é calculado com base no método *
-*Mod10** ou **Mod11**, dependendo da posição no boleto.
+O dígito verificador no boleto é utilizado para garantir a integridade dos dados. Ele é calculado com base no método \*
+\*Mod10** ou **Mod11\*\*, dependendo da posição no boleto.
 
 #### Código para Cálculo do Dígito Verificador usando Mod10
 
@@ -96,30 +99,30 @@ alternada de 2 e 1, soma os dígitos dos produtos e calcula o dígito verificado
 
 ```javascript
 function calculateMod10(value) {
-    let sum = 0;
-    let multiplier = 2; // Multiplicador inicial
+  let sum = 0;
+  let multiplier = 2; // Multiplicador inicial
 
-    // Percorre os dígitos de trás para frente
-    for (let i = value.length - 1; i >= 0; i--) {
-        // Converte o caractere para número e multiplica pelo multiplicador atual (2 ou 1)
-        let currentDigit = parseInt(value.charAt(i)) * multiplier;
+  // Percorre os dígitos de trás para frente
+  for (let i = value.length - 1; i >= 0; i--) {
+    // Converte o caractere para número e multiplica pelo multiplicador atual (2 ou 1)
+    let currentDigit = parseInt(value.charAt(i)) * multiplier;
 
-        // Se o produto for maior que 9, soma os dígitos do produto
-        // Exemplo: 14 vira 1 + 4 = 5
-        if (currentDigit > 9) {
-            currentDigit = Math.floor(currentDigit / 10) + (currentDigit % 10);
-        }
-
-        // Adiciona o valor ajustado à soma total
-        sum += currentDigit;
-
-        // Alterna o multiplicador entre 2 e 1
-        multiplier = (multiplier === 2) ? 1 : 2;
+    // Se o produto for maior que 9, soma os dígitos do produto
+    // Exemplo: 14 vira 1 + 4 = 5
+    if (currentDigit > 9) {
+      currentDigit = Math.floor(currentDigit / 10) + (currentDigit % 10);
     }
 
-    // Calcula o dígito verificador (Mod10)
-    const mod10 = sum % 10 === 0 ? 0 : 10 - (sum % 10);
-    return mod10;
+    // Adiciona o valor ajustado à soma total
+    sum += currentDigit;
+
+    // Alterna o multiplicador entre 2 e 1
+    multiplier = multiplier === 2 ? 1 : 2;
+  }
+
+  // Calcula o dígito verificador (Mod10)
+  const mod10 = sum % 10 === 0 ? 0 : 10 - (sum % 10);
+  return mod10;
 }
 
 /* Exemplo de uso com valor a 1ª sequencia da linha digitável "237912340":
@@ -163,25 +166,25 @@ específica de pesos (43298765432...), soma os produtos e calcula o dígito veri
 
 ```javascript
 function calculateMod11(value) {
-    /*
+  /*
     Seqüência numérica de 2 a 9 ( 2, 3, 4, 5, 6, 7, 8, 9...), da direita para a esquerda 
     Como essa sequencia se repete para multiplicar os 43 algarismos do boleto,
     podemos defini-la com a posição fixa de 43 digitos.
     */
-    const sequenceNumbers = "4329876543298765432987654329876543298765432"; // Sequência de pesos fixa
-    let sum = 0;
+  const sequenceNumbers = "4329876543298765432987654329876543298765432"; // Sequência de pesos fixa
+  let sum = 0;
 
-    // Percorre cada dígito do valor e multiplica pelo peso correspondente da sequência
-    for (let i = 0; i < value.length; i++) {
-        sum += parseInt(value.charAt(i)) * parseInt(sequenceNumbers.charAt(i));
-    }
+  // Percorre cada dígito do valor e multiplica pelo peso correspondente da sequência
+  for (let i = 0; i < value.length; i++) {
+    sum += parseInt(value.charAt(i)) * parseInt(sequenceNumbers.charAt(i));
+  }
 
-    // Calcula o módulo 11 da soma
-    const mod11 = sum % 11;
-    let checksum = 11 - mod11;
+  // Calcula o módulo 11 da soma
+  const mod11 = sum % 11;
+  let checksum = 11 - mod11;
 
-    // Ajusta o dígito verificador caso o resultado seja 0, 1, 10 ou 11
-    return checksum === 0 || checksum === 1 || checksum > 9 ? 1 : checksum;
+  // Ajusta o dígito verificador caso o resultado seja 0, 1, 10 ou 11
+  return checksum === 0 || checksum === 1 || checksum > 9 ? 1 : checksum;
 }
 
 /* Exemplo de uso com o código de barras "23796988500000200251234010001234200240012430"
@@ -255,45 +258,104 @@ Resultado: O dígito verificador para "23799885000002002512340100012342002400124
 
 ### Fator de Vencimento
 
-O fator de vencimento é calculado a partir de uma data base estabelecida pelo BACEN (07/10/1997). Ele representa o número de dias
-entre essa data base e a data de vencimento do boleto.
+O fator de vencimento é um campo de 4 dígitos (0000 a 9999) que representa o número de dias decorridos a partir de uma data base.
 
-Assim, um boleto bancário vencido em 31/12/2007, por exemplo, teria no campo "vencimento" os números: "3737". Os
-números "3737" correspondem ao número de dias decorridos entre 07/10/1997 e 31/12/2007 (31/12/2007 - 07/10/1997 = 3737).
+- **Fator 0000**: Geralmente indica ausência de vencimento (ex: pagamento à vista), podendo variar conforme o banco.
+- **Cálculo**: Data de Vencimento = Data Base + Fator.
 
-- [Data de Vencimento e Valor](https://www.boletobancario-codigodebarras.com/2018/04/data-de-vencimento-e-valor.html)
+#### Reset e Ciclos da FEBRABAN
 
-#### Código para Cálculo da Data de Vencimento
+Devido ao limite de 4 dígitos, o contador reinicia aproximadamente a cada 27 anos.
+
+1.  **Ciclo 1 (Original)**: Base em **07/10/1997**. Atingiu o fator limite (9999) em **21/02/2025**.
+2.  **Novo cálculo (pós-reset)**: A partir de **22/02/2025**, o fator foi reiniciado em **1000**, utilizando a base **29/05/2022**.
+
+#### Estratégia para Ambiguidade
+
+Como o fator se repete entre ciclos (ex: 1000), é necessário aplicar uma regra de desambiguação.
+
+Uma abordagem comum é utilizar uma **janela deslizante**:
+
+- Se o cálculo usando a base de 1997 resultar em uma data muito antiga (ex: mais de 10 anos no passado), assume-se que o fator pertence ao novo ciclo.
+
+#### Código para Cálculo (Padrão Atual)
+
+Esta é a implementação resiliente utilizada no PayCheckBR, preparada para o reset de 2025:
 
 ```javascript
-function calculateDueDate(factor) {
-   // Data base: 07/10/1997 em UTC - Tempo Universal Coordenado 
-   // Exemplo de retorno Date.UTC: Tue Oct 07 1997 00:00:00 GMT+0000 (UTC)
-   const refDate = new Date(Date.UTC(1997, 9, 7)); 
-   const dueDays = parseInt(factor, 10);
+/**
+ * Resolve a data de vencimento localizada a partir do fator de vencimento do boleto.
+ *
+ * O fator de vencimento é um campo de 4 dígitos (0-9999) no código de barras onde
+ * o fator 1000 mapeia para a data base do ciclo, e cada +1 representa +1 dia.
+ *
+ * Fator 0 significa "sem vencimento" (à vista).
+ *
+ * Reset FEBRABAN 2025:
+ * O espaço do fator de 4 dígitos reinicia aproximadamente a cada 9000 dias (~24,6 anos).
+ * O ciclo legado (Ciclo 1) terminou em 21/02/2025 (Fator 9999).
+ * O novo ciclo (Ciclo 2) começou em 22/02/2025 (Fator 1000).
+ *
+ * Quando a data do ciclo legado cai a mais de 10 anos no passado, assumimos que
+ * o fator pertence ao novo ciclo (base: 2022-05-29).
+ * A aproximação de 10 anos (3650 dias) ignora intencionalmente anos bissextos —
+ * a precisão é irrelevante para uma heurística com um intervalo de ~24 anos entre os ciclos.
+ *
+ * @param {number|string} expiryFactor - O fator de vencimento de 4 dígitos do código de barras.
+ * @param {number} [now=Date.now()] - Timestamp de referência para testabilidade.
+ * @returns {string} Data formatada no padrão pt-BR, ou "Sem vencimento (À vista)".
+ */
+const resolveExpiryDate = (expiryFactor, now = Date.now()) => {
+  const dayOffset = Number(expiryFactor);
 
-   // Se o fator de vencimento for 0000, o boleto não tem data de vencimento
-   if (dueDays === 0) {
-     return "Sem vencimento";
-   }
-    
-   // Calcula a data de vencimento somando os dias ao refDate
-   // Converte os dias de vencimento em milissegundos (1 dia = 86.400.000 ms).
-   // refDate.getTime() retorna 875404800000, que é o total de milissegundos entre 1º de janeiro de 1970 e 7 de outubro de 1997.
-   const dueDate = new Date(refDate.getTime() + (dueDays * 86400000)); 
-   
-   // Retorna a data no formato DD/MM/AAAA
-   return dueDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-}
+  if (dayOffset === 0) return "Sem vencimento (À vista)";
+
+  const MS_PER_DAY = 86_400_000;
+  const LEGACY_BASE = Date.UTC(1997, 9, 7); // Ciclo 1
+  const RESET_BASE = Date.UTC(2022, 4, 29); // Ciclo 2
+  const TEN_YEARS_MS = 3_650 * MS_PER_DAY;
+
+  const legacyTimestamp = LEGACY_BASE + dayOffset * MS_PER_DAY;
+
+  // Se a data no padrão antigo (1997) estiver a mais de 10 anos no passado,
+  // assumimos que o boleto pertence ao novo ciclo (2025).
+  const isLegacyCycle = legacyTimestamp >= now - TEN_YEARS_MS;
+
+  const baseDate = isLegacyCycle ? LEGACY_BASE : RESET_BASE;
+  const timestamp = baseDate + dayOffset * MS_PER_DAY;
+
+  const formattedExpiryDate = new Date(timestamp).toLocaleDateString("pt-BR", {
+    timeZone: "UTC",
+  });
+
+  return formattedExpiryDate;
+};
 ```
 
-**Explicação do Código:**
+#### Histórico (Padrão 1997)
 
-- Definimos uma data base (07/10/1997) a partir da qual o fator de vencimento é calculado.
-- O fator de vencimento representa a quantidade de dias que deve ser adicionada à data base para obter a data de
-  vencimento.
-- Se o fator de vencimento for `0000`, o boleto é considerado "Sem vencimento".
-- A função retorna a data formatada no padrão brasileiro.
+Antes do reset de 2025, o cálculo era determinístico e utilizava apenas a data base de 07/10/1997. Boletos emitidos sob este padrão original funcionaram sem ambiguidades por mais de duas décadas.
+
+```javascript
+/**
+ * Versão original baseada estritamente no padrão de 1997.
+ * - Definimos uma data base (07/10/1997) a partir da qual o fator de vencimento é calculado.
+ * - O fator de vencimento representa a quantidade de dias que deve ser adicionada
+ *   à data base para obter a data de vencimento.
+ * - Se o fator de vencimento for `0000`, o boleto é considerado "Sem vencimento".
+ * - A função retorna a data formatada no padrão brasileiro.
+ */
+function calculateDueDate(factor) {
+  const dueDays = parseInt(factor, 10);
+  if (dueDays === 0) return "Sem vencimento";
+
+  // Data base original estabelecida pelo BACEN: 07/10/1997
+  const refDate = new Date(Date.UTC(1997, 9, 7));
+  const dueDate = new Date(refDate.getTime() + dueDays * 86400000);
+
+  return dueDate.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+}
+```
 
 ### Linha Digitável e Código de Barras
 
@@ -306,12 +368,12 @@ dígitos segmentados para facilitar a leitura, enquanto o código de barras poss
 
 ```javascript
 function convertLineToBarCode(bankSlipLine) {
-    // Verifica se a linha digitável tem exatamente 47 dígitos.
-    if (bankSlipLine.length !== 47) {
-        return null;
-    }
+  // Verifica se a linha digitável tem exatamente 47 dígitos.
+  if (bankSlipLine.length !== 47) {
+    return null;
+  }
 
-    /* 
+  /* 
     A linha digitável possui 47 dígitos estruturados em diferentes seções que precisamos reorganizar para obter o código de barras de 44 dígitos.
     
     Exemplo de linha digitável:
@@ -330,12 +392,12 @@ function convertLineToBarCode(bankSlipLine) {
     A sequência de substituição `'$1$6$2$3$4'` reorganiza esses grupos que são separados pelos parenteses para o formato de código de barras.
     */
 
-    const barCode = bankSlipLine.replace(
-        /^(\d{4})(\d{5})\d{1}(\d{10})\d{1}(\d{10})\d{1}(\d{15})$/,
-        '$1$6$2$3$4'
-    );
+  const barCode = bankSlipLine.replace(
+    /^(\d{4})(\d{5})\d{1}(\d{10})\d{1}(\d{10})\d{1}(\d{15})$/,
+    "$1$6$2$3$4",
+  );
 
-    /*
+  /*
     Como funciona a sequência de substituição `'$1$6$2$3$4'`:
     
     - `$1`: Primeiro grupo de captura, os primeiros 4 dígitos que representam o banco e moeda (ex: "2379").
@@ -345,7 +407,7 @@ function convertLineToBarCode(bankSlipLine) {
     O código reorganiza a linha digitável, excluindo os dígitos verificadores específicos de cada campo e mantendo apenas o dígito verificador geral.
     */
 
-    return barCode;
+  return barCode;
 }
 
 // Exemplo: Convertendo "23791.23405 10001.234201 02400.124307 6 98850000020025"
@@ -362,12 +424,12 @@ function convertLineToBarCode(bankSlipLine) {
 
 ```javascript
 function convertBarCodeToReadableLine(barCode) {
-    // Verifica se o código de barras tem exatamente 44 dígitos
-    if (barCode.length !== 44) {
-        return null;
-    }
+  // Verifica se o código de barras tem exatamente 44 dígitos
+  if (barCode.length !== 44) {
+    return null;
+  }
 
-    /* 
+  /* 
     A linha digitável é formada por três campos principais de dados (Campo 1, Campo 2, e Campo 3),
     além de um campo de verificação geral (Campo 4) e um campo de vencimento e valor (Campo 5).
  
@@ -377,39 +439,41 @@ function convertBarCodeToReadableLine(barCode) {
     23796988500000200251234010001234200240012430
     */
 
-    // Campo 1: Combina os primeiros 4 dígitos (banco e moeda) com parte do campo livre (dígitos de 20 a 24)
-    const field1 = `${barCode.substring(0, 4)}${barCode.substring(19, 24)}`;
-    // Calcula o dígito verificador do Campo 1 usando o método Mod10
-    const field1Dv = calculateMod10(field1);
+  // Campo 1: Combina os primeiros 4 dígitos (banco e moeda) com parte do campo livre (dígitos de 20 a 24)
+  const field1 = `${barCode.substring(0, 4)}${barCode.substring(19, 24)}`;
+  // Calcula o dígito verificador do Campo 1 usando o método Mod10
+  const field1Dv = calculateMod10(field1);
 
-    // Campo 2: Captura os dígitos de 25 a 34 do código de barras para formar o segundo campo da linha digitável
-    const field2 = barCode.substring(24, 34);
-    // Calcula o dígito verificador do Campo 2
-    const field2Dv = calculateMod10(field2);
+  // Campo 2: Captura os dígitos de 25 a 34 do código de barras para formar o segundo campo da linha digitável
+  const field2 = barCode.substring(24, 34);
+  // Calcula o dígito verificador do Campo 2
+  const field2Dv = calculateMod10(field2);
 
-    // Campo 3: Captura os dígitos de 35 a 44 do código de barras para o terceiro campo
-    const field3 = barCode.substring(34, 44);
-    // Calcula o dígito verificador do Campo 3
-    const field3Dv = calculateMod10(field3);
+  // Campo 3: Captura os dígitos de 35 a 44 do código de barras para o terceiro campo
+  const field3 = barCode.substring(34, 44);
+  // Calcula o dígito verificador do Campo 3
+  const field3Dv = calculateMod10(field3);
 
-    // Campo 4: Captura o dígito verificador geral na posição 5 do código de barras
-    const field4 = barCode.charAt(4);
+  // Campo 4: Captura o dígito verificador geral na posição 5 do código de barras
+  const field4 = barCode.charAt(4);
 
-    // Campo 5: Captura o fator de vencimento e o valor (dígitos de 6 a 19) para compor a parte final
-    const field5 = barCode.substring(5, 19);
+  // Campo 5: Captura o fator de vencimento e o valor (dígitos de 6 a 19) para compor a parte final
+  const field5 = barCode.substring(5, 19);
 
-    /*
+  /*
     Formata a linha digitável combinando os campos e seus dígitos verificadores:
     - Cada campo (field1, field2, field3) é dividido em duas partes e possui um dígito verificador específico.
     - Campo 4 e Campo 5 são adicionados no final para completar a linha digitável.
     */
 
-    return `${field1.substring(0, 5)}.${field1.substring(5)}${field1Dv} ` +
-           `${field2.substring(0, 5)}.${field2.substring(5)}${field2Dv} ` +
-           `${field3.substring(0, 5)}.${field3.substring(5)}${field3Dv} ` +
-           `${field4} ${field5}`;
-    
-    /*
+  return (
+    `${field1.substring(0, 5)}.${field1.substring(5)}${field1Dv} ` +
+    `${field2.substring(0, 5)}.${field2.substring(5)}${field2Dv} ` +
+    `${field3.substring(0, 5)}.${field3.substring(5)}${field3Dv} ` +
+    `${field4} ${field5}`
+  );
+
+  /*
     Exemplo de quebra dos campos no retorno:
     Campo 1: 23791.23405
     Campo 2: 10001.234204
