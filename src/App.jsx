@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import pkg from '../package.json';
 import { analyzePixQrCode } from './logic/validators/pix';
 import { analyzePaymentSlipLine } from './logic/validators/bank-slip';
 import { validateCreditCardData } from './logic/validators/credit-card';
@@ -410,7 +411,7 @@ const App = () => {
                 {/* Footer */}
                 <footer className="text-center py-12 opacity-60 space-y-2">
                     <p className="text-xs font-bold uppercase tracking-widest">
-                        PayCheckBR v1.2.3 • {new Date().getFullYear()}
+                        PayCheckBR v{pkg.version} • {new Date().getFullYear()}
                     </p>
                     <a 
                         href="https://github.com/thiagocajadev/PayCheckBR" 
